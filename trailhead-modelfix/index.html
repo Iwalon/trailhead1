@@ -1,0 +1,2661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trailhead: follow research anywhere</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,750&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2EE; --surface:#F9FBF8; --ink:#1B2A2C; --muted:#5F706D; --line:#D2DBD4;
+  --accent:#1D6B58; --accent-ink:#FFFFFF; --mark:#E7AE36; --mark-soft:#F6E3B5; --accent-soft:#DCEEE6; --danger:#A5412F;
+  --sans:"Bricolage Grotesque", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --serif:"Source Serif 4", Georgia, "Times New Roman", serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101819; --surface:#172224; --ink:#E4EBE7; --muted:#95A6A2; --line:#2A393B;
+    --accent:#5CBFA3; --accent-ink:#0C1A17; --mark:#EDBE55; --mark-soft:#3A3120; --accent-soft:#17362F; --danger:#E08A76;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101819; --surface:#172224; --ink:#E4EBE7; --muted:#95A6A2; --line:#2A393B;
+  --accent:#5CBFA3; --accent-ink:#0C1A17; --mark:#EDBE55; --mark-soft:#3A3120; --accent-soft:#17362F; --danger:#E08A76;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--mark);outline-offset:2px;border-radius:4px}
+img,svg{max-width:100%}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* Top bar */
+.bar{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;max-width:1440px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;font-weight:750;font-size:19px;letter-spacing:-.01em}
+.brand svg{width:28px;height:28px;flex:none;overflow:visible}
+.notice{background:var(--mark-soft);color:var(--ink);border-radius:10px;padding:10px 14px;font-size:14px;margin:0 24px 12px;max-width:1392px}
+@media (min-width:1440px){.notice{margin-left:auto;margin-right:auto}}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:10px 18px;border:1.5px solid var(--line);background:var(--surface);font-weight:600;font-size:15px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.link{background:none;border:0;padding:0;color:var(--muted);font-weight:600;font-size:14px}
+.link:hover{color:var(--ink)}
+
+/* Home */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding:36px 0 28px}
+.hero h1{font-size:clamp(40px,6.4vw,78px);line-height:.98;letter-spacing:-.035em;font-weight:750;margin:0 0 20px}
+.hero p{font-family:var(--serif);font-size:19px;line-height:1.6;color:var(--muted);max-width:34em;margin:0}
+.hero-art{width:100%;height:auto}
+.hero-art .path{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round}
+.hero-art .path.faint{stroke:var(--line);stroke-width:2}
+.hero-art .node{fill:var(--surface);stroke:var(--ink);stroke-width:2.2}
+.hero-art .node.on{fill:var(--mark);stroke:var(--ink)}
+.hero-art .draw{stroke-dasharray:600;stroke-dashoffset:600;animation:draw 2.2s .2s ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.hero-art .draw{animation:none;stroke-dashoffset:0}}
+.section-title{font-size:22px;font-weight:600;letter-spacing:-.01em;margin:28px 0 14px}
+.fields{list-style:none;margin:0;padding:0;border-top:1.5px solid var(--ink)}
+.fields li{border-bottom:1px solid var(--line)}
+.field-row{width:100%;display:grid;grid-template-columns:56px 1fr auto;gap:18px;align-items:center;background:none;border:0;text-align:left;padding:18px 6px}
+.field-row:hover{background:var(--surface)}
+.field-row .glyph{width:48px;height:48px;color:var(--accent)}
+.field-row .name{font-size:clamp(24px,3vw,34px);font-weight:600;letter-spacing:-.02em;line-height:1.1}
+.field-row .blurb{font-family:var(--serif);color:var(--muted);font-size:16px}
+.field-row .go{font-size:14px;font-weight:600;color:var(--muted)}
+.field-row:hover .go{color:var(--accent)}
+.recent{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:48px}
+.recent-item{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.recent-item strong{font-size:17px;line-height:1.25}
+.recent-item span{color:var(--muted);font-size:14px}
+.recent-item .row{display:flex;gap:14px;align-items:center;margin-top:4px}
+footer{color:var(--muted);font-size:13px;padding:24px 0 40px;font-family:var(--serif)}
+
+/* Field page */
+.field-page{max-width:820px;margin:0 auto;padding:18px 24px 60px}
+.field-page h1{font-size:clamp(32px,5vw,52px);line-height:1.02;letter-spacing:-.03em;margin:14px 0 22px;font-weight:750}
+.search{display:flex;gap:10px;flex-wrap:wrap}
+.search input{flex:1 1 300px;min-width:0;font:inherit;font-size:18px;padding:14px 18px;border-radius:999px;border:1.5px solid var(--ink);background:var(--surface);color:var(--ink)}
+.search input::placeholder{color:var(--muted)}
+.or{display:flex;align-items:center;gap:14px;color:var(--muted);margin:34px 0 18px;font-family:var(--serif);font-style:italic}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:18px}
+.cat{text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.cat:hover{border-color:var(--accent)}
+.cat b{font-size:18px;line-height:1.2;font-weight:600}
+.cat span{font-family:var(--serif);color:var(--muted);font-size:15px;line-height:1.45}
+.cat i{font-family:var(--serif);font-size:14px;color:var(--ink)}
+
+/* Trail workspace */
+.work{display:grid;grid-template-columns:250px minmax(0,1fr) 360px;gap:0;max-width:1440px;margin:0 auto;min-height:calc(100vh - 70px);align-content:start}
+.col-trail{border-right:1px solid var(--line);padding:8px 18px 30px}
+.col-main{padding:8px 36px 60px;min-width:0}
+.col-chat{border-left:1px solid var(--line);display:flex;flex-direction:column;height:calc(100vh - 70px);position:sticky;top:0}
+.trail-head{font-size:13px;color:var(--muted);margin:10px 0 2px}
+.trail-topic{font-size:20px;font-weight:600;line-height:1.2;margin:0 0 16px;letter-spacing:-.01em}
+.tree,.tree ul{list-style:none;margin:0;padding:0}
+.tree ul{margin-left:9px;padding-left:12px;border-left:2px solid var(--line)}
+.tree li{margin:2px 0}
+.tnode{display:flex;gap:9px;align-items:flex-start;width:100%;background:none;border:0;text-align:left;padding:6px 6px;border-radius:8px;font-size:14px;line-height:1.3}
+.tnode:hover{background:var(--surface)}
+.tnode .dot{flex:none;width:12px;height:12px;border-radius:50%;border:2px solid var(--ink);background:var(--surface);margin-top:3px}
+.tnode.cur{background:var(--surface);font-weight:600}
+.tnode.cur .dot{background:var(--mark)}
+.tnode.backed{color:var(--muted)}
+.tnode.backed .dot{border-color:var(--muted)}
+.tnode .via{display:block;font-size:12px;color:var(--muted);font-weight:400;margin-top:2px}
+.gloss{margin-top:26px;border-top:1px solid var(--line);padding-top:14px}
+.gloss summary{cursor:pointer;font-weight:600;font-size:15px}
+.gloss dl{margin:10px 0 0;font-size:14px;max-height:320px;overflow:auto}
+.gloss dt{font-weight:600;margin-top:8px}
+.gloss dd{margin:0;font-family:var(--serif);color:var(--muted)}
+
+.crumb{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:10px 0 18px}
+.pick-title{font-size:clamp(28px,3.6vw,42px);line-height:1.05;letter-spacing:-.03em;margin:0 0 8px;font-weight:750;max-width:20em}
+.pick-sub{font-family:var(--serif);color:var(--muted);font-size:17px;margin:0 0 24px;max-width:40em}
+.cands{list-style:none;margin:0;padding:0;counter-reset:c}
+.cand{width:100%;display:block;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:18px 22px;margin-bottom:12px}
+.cand:hover{border-color:var(--ink)}
+.cand .angle{font-size:13px;color:var(--accent);font-weight:600;display:flex;gap:10px;align-items:center}
+.cand .hl{display:block;font-size:clamp(19px,2.2vw,24px);line-height:1.2;letter-spacing:-.015em;font-weight:600;margin-top:4px}
+.kind{display:inline-block;font-size:12px;font-weight:600;border-radius:6px;padding:1px 8px;margin-right:8px;background:var(--accent);color:var(--accent-ink)}
+.chip{display:inline-block;font-size:12px;font-weight:600;border-radius:999px;padding:1px 9px;background:var(--mark-soft);color:var(--ink)}
+.skel{height:86px;border-radius:16px;margin-bottom:12px;background:linear-gradient(90deg,var(--surface) 25%,var(--line) 50%,var(--surface) 75%);background-size:300% 100%;animation:sh 1.6s linear infinite}
+@keyframes sh{to{background-position:-300% 0}}
+@media (prefers-reduced-motion:reduce){.skel{animation:none}}
+.status{font-family:var(--serif);color:var(--muted);font-style:italic;margin:6px 0 16px}
+.err{color:var(--danger);font-weight:600;margin:10px 0}
+.actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:18px}
+
+/* Reading view */
+.read{max-width:720px}
+.read .angle{font-size:14px;color:var(--accent);font-weight:600}
+.read h1{font-size:clamp(28px,3.8vw,44px);line-height:1.06;letter-spacing:-.03em;margin:6px 0 14px;font-weight:750}
+.meta{font-family:var(--serif);font-size:15px;color:var(--muted);line-height:1.5;margin-bottom:6px}
+.meta cite{font-style:italic;color:var(--ink)}
+.read h2{font-size:15px;font-weight:600;color:var(--muted);margin:34px 0 8px}
+.prose{font-family:var(--serif);font-size:19px;line-height:1.68}
+.prose p{margin:0 0 14px}
+.finding{border-left:4px solid var(--mark);padding:6px 0 6px 18px;font-size:21px;line-height:1.4;font-weight:600;letter-spacing:-.01em;margin:22px 0 0}
+.lesson{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px 26px;margin-top:10px}
+.lesson .intro{font-family:var(--serif);font-size:18px;line-height:1.6;margin:0 0 16px}
+.terms{margin:0;display:grid;gap:14px}
+.terms div{display:grid;grid-template-columns:minmax(120px,190px) 1fr;gap:16px;border-top:1px solid var(--line);padding-top:12px}
+.terms dt{font-weight:600;font-size:17px;line-height:1.3}
+.terms dd{margin:0;font-family:var(--serif);font-size:17px;line-height:1.55}
+.terms dd em{display:block;color:var(--muted);font-size:15px;margin-top:4px}
+.links{list-style:none;margin:6px 0 0;padding:0}
+.links li{font-family:var(--serif);font-size:17px;line-height:1.5;padding:8px 0;border-top:1px dashed var(--line)}
+.links b{font-family:var(--sans);font-weight:600}
+.known{font-size:14px;color:var(--muted);margin-top:14px}
+.known .chip{margin:2px 4px 0 0;background:transparent;border:1px solid var(--line)}
+.fineprint{font-size:13px;color:var(--muted);font-family:var(--serif);margin-top:26px}
+.stickyact{position:sticky;bottom:0;background:linear-gradient(to top,var(--bg) 70%,transparent);padding:22px 0 16px;margin-top:10px}
+
+/* Chat */
+.chat-head{padding:16px 18px 10px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.chat-head h2{margin:0;font-size:17px}
+.chat-log{flex:1;overflow:auto;padding:14px 18px;display:flex;flex-direction:column;gap:12px}
+.msg{max-width:92%;font-size:15px;line-height:1.5;white-space:pre-wrap}
+.msg.u{align-self:flex-end;background:var(--accent);color:var(--accent-ink);padding:9px 13px;border-radius:14px 14px 4px 14px}
+.msg.a{align-self:flex-start;font-family:var(--serif);font-size:16px}
+.msg .jump{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px;font-family:var(--sans);font-size:13px;background:var(--mark-soft);padding:8px 10px;border-radius:10px;white-space:normal}
+.chat-empty{color:var(--muted);font-family:var(--serif);font-size:15px}
+.suggest{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.suggest button{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 11px;font-size:14px}
+.suggest button:hover{border-color:var(--accent)}
+.chat-form{display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--line)}
+.chat-form textarea{flex:1;resize:none;font:inherit;font-size:15px;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);min-height:44px;max-height:140px}
+.chat-form textarea:focus{border-color:var(--accent);outline:none}
+.chat-toggle{display:none}
+.chat-close{display:none}
+.trail-toggle{display:none}
+
+@media (max-width:1180px){
+  .work{grid-template-columns:minmax(0,1fr) 340px}
+  .col-trail{grid-column:1/-1;border-right:0;border-bottom:1px solid var(--line);padding:0 24px 8px}
+  .col-trail .tree-wrap{display:none}
+  .col-trail.open .tree-wrap{display:block}
+  .trail-toggle{display:inline-flex}
+  .col-main{padding:8px 24px 60px}
+  .col-chat{height:calc(100vh - 20px)}
+}
+@media (max-width:820px){
+  .hero{grid-template-columns:1fr}
+  .hero-art{max-width:380px}
+  .work{grid-template-columns:1fr}
+  .col-chat{display:none;position:fixed;inset:0;z-index:20;background:var(--bg);height:100%;border:0}
+  body.chat-open .col-chat{display:flex}
+  .chat-close{display:inline}
+  .chat-toggle{display:inline-flex;position:fixed;right:16px;bottom:16px;z-index:15;box-shadow:0 6px 20px rgba(0,0,0,.18)}
+  .field-row{grid-template-columns:40px 1fr}
+  .field-row .glyph{width:36px;height:36px}
+  .field-row .go{display:none}
+  .terms div{grid-template-columns:1fr;gap:4px}
+  .lesson{padding:18px}
+}
+
+.term{font:inherit;font-weight:600;font-style:inherit;color:var(--accent);background:none;border-bottom:2px solid var(--mark);cursor:pointer;border-radius:2px;padding:0 1px;text-decoration:none;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.term:hover,.term.active{background:var(--mark-soft)}
+.term.known{border-bottom-style:dotted;border-bottom-color:var(--accent)}
+.term.demo{cursor:default;pointer-events:none}
+.term-hint{font-size:14px;color:var(--muted);margin:-2px 0 12px}
+.finding .term,.lesson .term{font-weight:600}
+.known .term{font-size:inherit}
+#termpop{position:fixed;z-index:50;background:var(--surface);color:var(--ink);border:1.5px solid var(--ink);border-radius:12px;padding:12px 14px;box-shadow:0 10px 30px rgba(0,0,0,.18);font-size:15px;line-height:1.45}
+#termpop .pop-term{font-weight:750;font-size:16px;margin-bottom:4px;color:var(--accent)}
+#termpop .pop-mean{font-family:var(--serif);font-size:16px}
+#termpop .pop-ana{font-family:var(--serif);font-style:italic;color:var(--muted);margin-top:6px}
+#termpop .pop-note{font-size:12px;color:var(--muted);margin-top:8px}
+
+.cite-note{font-size:14px;color:var(--muted);margin:4px 0 0;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.cite-btn.on{border-color:var(--ink)}
+.side-cite{margin-top:18px;width:100%;justify-content:center}
+.seg{display:inline-flex;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden;margin:4px 0 8px}
+.seg button{background:var(--surface);border:0;padding:8px 16px;font-weight:600;font-size:14px}
+.seg button + button{border-left:1.5px solid var(--ink)}
+.seg button.on{background:var(--ink);color:var(--bg)}
+.cite-heading{font-size:18px;margin:26px 0 6px;font-weight:600}
+.cites{list-style:none;margin:0;padding:0;max-width:760px}
+.cite{padding:14px 0;border-top:1px solid var(--line)}
+.cite-text{font-family:"Times New Roman", var(--serif);font-size:18px;line-height:1.6;padding-left:2.2em;text-indent:-2.2em;overflow-wrap:anywhere}
+.cite.off .cite-text{color:var(--muted);text-decoration:line-through;text-decoration-thickness:1px}
+.cite-acts{display:flex;gap:16px;flex-wrap:wrap;margin-top:6px;padding-left:2.2em}
+.cite-acts a.link{text-decoration:none}
+@media (max-width:820px){ .side-cite{display:none} }
+
+.back-btn{font-size:16px;padding:11px 20px 11px 14px}
+.chat-sub{font-size:13px;color:var(--muted);margin-top:1px}
+.msg.a.working{color:var(--muted);font-style:italic}
+.msg.a.nosrc{color:var(--muted)}
+.src{display:flex;flex-direction:column;gap:2px;margin-top:10px;font-family:var(--sans);white-space:normal;border-left:3px solid var(--accent);background:var(--accent-soft);padding:8px 12px;border-radius:0 10px 10px 0}
+.src.undone{opacity:.6}
+.src-k{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}
+.src .link{color:var(--accent)}
+.src .link:hover{color:var(--ink)}
+.src-t{font-weight:600;font-size:14px;line-height:1.3}
+.src-why{font-size:13px;color:var(--muted);line-height:1.35}
+.src-acts{display:flex;gap:14px;margin-top:4px}
+
+.cand{position:relative}
+.cand-year{display:block;margin-top:6px;font-size:13px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.read-year{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:2px}
+.src-also{margin-top:4px;font-size:13px;color:var(--muted)}
+.src-also summary{cursor:pointer;font-weight:600}
+.src-also div{margin-top:4px;line-height:1.35}
+
+.lens{margin:0 0 20px}
+.lens-form label{display:block;font-size:14px;color:var(--muted);margin-bottom:6px}
+.lens-row{display:flex;gap:8px;flex-wrap:wrap}
+.lens-row input{flex:1 1 240px;min-width:0;font:inherit;font-size:15px;padding:9px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink)}
+.lens-row input:focus{border-color:var(--accent);outline:none}
+.lens-on{display:inline-block;background:var(--accent-soft);border-radius:999px;padding:6px 14px;font-size:15px;margin-right:12px}
+
+.lims{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:8px;max-width:640px}
+.lim{width:100%;display:flex;justify-content:space-between;align-items:center;gap:14px;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-left:4px solid var(--danger);border-radius:12px;padding:12px 16px}
+.lim:hover{border-color:var(--ink);border-left-color:var(--danger)}
+.lim-name{font-weight:600;font-size:17px;line-height:1.3}
+.lim-go{flex:none;font-size:13px;font-weight:600;color:var(--accent)}
+.limlist{list-style:none;margin:8px 0 0;padding:0}
+.limrow{width:100%;text-align:left;background:none;border:0;border-left:3px solid var(--danger);padding:6px 8px;border-radius:0 8px 8px 0;display:block}
+.limrow:hover{background:var(--surface)}
+.limrow-n{display:block;font-size:14px;font-weight:600;line-height:1.3}
+.limrow-s{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.modal-back{position:fixed;inset:0;background:rgba(10,20,20,.45);z-index:60}
+.modal{position:fixed;z-index:61;left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,calc(100vw - 32px));max-height:min(80vh,720px);overflow:auto;background:var(--bg);border:1.5px solid var(--ink);border-radius:18px;padding:26px 28px;box-shadow:0 20px 60px rgba(0,0,0,.28)}
+.modal-x{position:absolute;top:10px;right:14px;background:none;border:0;font-size:26px;line-height:1;color:var(--muted)}
+.modal-x:hover{color:var(--ink)}
+.modal-k{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--danger)}
+.modal-h{font-size:24px;line-height:1.2;letter-spacing:-.02em;margin:4px 0 10px;font-weight:750}
+.modal-d{font-family:var(--serif);font-size:17px;line-height:1.55;margin:0 0 10px}
+.modal-src{font-size:13px;color:var(--muted);margin:0 0 18px}
+.fix-state{font-family:var(--serif);font-size:16px;line-height:1.5;background:var(--accent-soft);border-radius:12px;padding:12px 14px;margin:0 0 14px}
+.fixes{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.fix{width:100%;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;display:block}
+.fix:hover{border-color:var(--accent)}
+.fix-top{display:flex;gap:10px;align-items:center;margin-bottom:4px}
+.fix-year{font-size:13px;font-weight:600;color:var(--muted)}
+.fix-hl{display:block;font-size:17px;font-weight:600;line-height:1.3}
+.fix-why{display:block;font-family:var(--serif);font-size:15px;color:var(--muted);line-height:1.4;margin-top:4px}
+@media (max-width:820px){ .modal{padding:22px 18px} .lim{flex-direction:column;align-items:flex-start;gap:6px} }
+
+.backup{border-top:1px solid var(--line);margin:34px 0 0;padding:20px 0 0;max-width:640px}
+.backup-t{font-weight:600;font-size:17px}
+.backup-p{font-family:var(--serif);color:var(--muted);font-size:16px;margin:4px 0 0;line-height:1.5}
+.backup label.btn{cursor:pointer}
+
+.orig{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:30px}
+.orig .btn{text-decoration:none}
+.orig-note{flex:1 1 220px;font-size:13px;color:var(--muted);font-family:var(--serif);line-height:1.4}
+.stickyact a.btn{text-decoration:none}
+.msg.a.meta{font-family:var(--sans);font-size:15px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 13px}
+
+.bar-right{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:flex-end}
+.netpill{font-size:12px;font-weight:600;border-radius:999px;padding:4px 11px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.netpill.on{color:var(--accent);border-color:var(--accent)}
+.netpill.off{color:var(--muted)}
+.pb{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;border-radius:999px;padding:2px 10px;border:1px solid transparent;white-space:nowrap}
+.pb.ok{background:var(--accent-soft);color:var(--accent)}
+.pb.warn{background:var(--mark-soft);color:var(--ink)}
+.pb.bad{background:var(--danger);color:#fff}
+.pb.mute{border-color:var(--line);color:var(--muted)}
+.pb.guess{opacity:.78;border-style:dashed;border-color:currentColor}
+.vb{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
+.vb.miss{color:var(--danger)}
+.cand-meta{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:8px}
+.cand-year{margin-top:0}
+.read-badges{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:8px}
+.read-badges .read-year{margin-bottom:0}
+.retract{background:var(--danger);color:#fff;border-radius:12px;padding:10px 14px;font-weight:600;font-size:15px;margin:0 0 14px}
+
+.lookup-note{font-family:var(--serif);font-size:15px;color:var(--muted);line-height:1.5;max-width:60ch;margin:26px 0 0}
+
+.netpill.wait{opacity:.7}
+
+.msg.haspts{max-width:100%;width:100%}
+.opt-lead{margin-top:12px;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--muted);white-space:normal;line-height:1.35}
+.opts{margin-top:8px;white-space:normal;font-family:var(--sans);min-width:0}
+.opt-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.opt-arrow{background:var(--surface);border:1.5px solid var(--line);border-radius:50%;width:30px;height:30px;line-height:1;font-size:19px;display:flex;align-items:center;justify-content:center;flex:none;padding:0 0 2px}
+.opt-arrow:hover:not(:disabled){border-color:var(--ink)}
+.opt-arrow:disabled{opacity:.3;cursor:default}
+.opt-count{font-size:12px;font-weight:600;color:var(--muted)}
+.opt{display:block;width:100%;min-width:0;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;overflow-wrap:anywhere}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default}
+.opt.picked{border-color:var(--accent);background:var(--accent-soft)}
+.opt-hl{display:block;font-size:15px;font-weight:600;line-height:1.3}
+.opt-meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:7px}
+.opt-year{font-size:12px;font-weight:600;color:var(--muted)}
+.opt-venue{display:block;font-size:12px;color:var(--muted);margin-top:5px;line-height:1.35}
+.opt-why{display:block;font-family:var(--serif);font-size:14px;line-height:1.45;color:var(--muted);margin-top:7px}
+.opt-go,.opt-tag{display:block;font-size:12px;font-weight:600;color:var(--accent);margin-top:9px}
+.opt-dots{display:flex;gap:6px;justify-content:center;margin-top:9px}
+.opt-dots .dot{width:7px;height:7px;border-radius:50%;border:0;padding:0;background:var(--line)}
+.opt-dots .dot.on{background:var(--accent)}
+.opt-alt{margin-top:9px}
+.pb{max-width:100%;white-space:normal}
+
+.ideas{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:10px;max-width:680px}
+.ideacard{width:100%;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:14px 18px;display:block}
+.ideacard:hover{border-color:var(--ink);border-left-color:var(--accent)}
+.ideacard-t{display:block;font-size:19px;font-weight:600;line-height:1.25}
+.ideacard-m{display:block;font-size:13px;color:var(--muted);margin-top:5px}
+.ideabar{display:block;height:5px;border-radius:3px;background:var(--line);margin-top:10px;overflow:hidden}
+.ideabar span{display:block;height:100%;background:var(--accent)}
+.idea-wrap{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:32px;align-items:start}
+.idea-k{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.idea-h{font-size:clamp(24px,3.2vw,36px);line-height:1.08;letter-spacing:-.025em;margin:5px 0 10px;font-weight:750}
+.idea-gap{font-family:var(--serif);font-size:17px;line-height:1.55;color:var(--muted);margin:0 0 8px;max-width:46em}
+.idea-src{font-size:13px;color:var(--muted);margin:0 0 20px;display:flex;gap:10px;flex-wrap:wrap}
+.idea-chat{border:1.5px solid var(--line);border-radius:16px;background:var(--surface);overflow:hidden}
+.idea-log{display:flex;flex-direction:column;gap:12px;padding:16px 18px;max-height:min(58vh,560px);overflow:auto}
+.idea-log .msg{max-width:88%}
+.idea-log .msg.a{font-family:var(--serif);font-size:16px}
+.idea-log .msg.a.working{color:var(--muted);font-style:italic;font-family:var(--sans);font-size:15px}
+.idea-chat .chat-form{background:var(--bg)}
+.cap{margin-top:8px;font-family:var(--sans);font-size:12px;font-weight:600;color:var(--accent);white-space:normal}
+.exp{display:flex;flex-direction:column;gap:2px;margin-top:10px;font-family:var(--sans);white-space:normal;border-left:3px solid var(--mark);background:var(--mark-soft);padding:8px 12px;border-radius:0 10px 10px 0}
+.exp .src-k{color:var(--ink);opacity:.65}
+.exp .link{color:var(--ink)}
+.idea-side{position:sticky;top:12px}
+.slots-h{font-size:13px;font-weight:600;color:var(--muted)}
+.slots{margin:8px 0 0}
+.slots div{border-top:1px solid var(--line);padding:9px 0}
+.slots div.on{border-top-color:var(--accent)}
+.slots dt{font-size:12px;font-weight:600;color:var(--muted)}
+.slots dd{margin:2px 0 0;font-family:var(--serif);font-size:15px;line-height:1.4}
+.slots div.on dd{color:var(--ink)}
+.slot-empty{color:var(--line);font-style:italic}
+.idea-links{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:7px}
+.idea-links .link{text-align:left;line-height:1.3}
+@media (max-width:980px){ .idea-wrap{grid-template-columns:1fr;gap:22px} .idea-side{position:static;border-top:1px solid var(--line);padding-top:16px} }
+
+.pnote{border-left:3px solid var(--mark);background:var(--mark-soft);border-radius:0 12px 12px 0;padding:11px 15px;margin:0 0 16px;max-width:640px}
+.pnote-k{display:block;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);opacity:.6;margin-bottom:3px}
+.pnote p{margin:0;font-family:var(--serif);font-size:15px;line-height:1.5}
+.pnote p + p{margin-top:6px}
+
+.boardpage{max-width:1100px;margin:0 auto;padding:10px 24px 70px}
+.idea-tab{gap:7px}
+.idea-tab.on{border-color:var(--ink)}
+.ideagroup{margin-top:30px}
+.ideagroup-h{font-size:16px;font-weight:600;margin:0 0 10px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.ideagroup-f{font-size:12px;font-weight:600;color:var(--muted)}
+.idea-trail{font-size:13px;color:var(--muted)}
+
+.paperchip{display:inline;font:inherit;font-family:var(--sans);font-size:.88em;font-weight:600;color:var(--accent);background:var(--accent-soft);border:0;border-radius:5px;padding:1px 6px;line-height:1.3;white-space:nowrap}
+.paperchip:hover{background:var(--accent);color:var(--accent-ink)}
+.idea-links .link{display:block}
+.idea-links .link b{color:var(--accent)}
+
+.recs{display:grid;gap:8px;margin-top:10px;white-space:normal;font-family:var(--sans)}
+.rec{display:block;width:100%;text-align:left;background:var(--bg);border:1.5px solid var(--line);border-radius:12px;padding:11px 13px}
+.rec:hover{border-color:var(--accent)}
+.rec-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:5px}
+.rec-cite{font-size:12px;font-weight:600;color:var(--muted)}
+.rec-hl{display:block;font-size:15px;font-weight:600;line-height:1.3}
+.rec-venue{display:block;font-size:12px;color:var(--muted);margin-top:4px;line-height:1.35}
+.rec-why{display:block;font-family:var(--serif);font-size:14px;line-height:1.45;color:var(--muted);margin-top:6px}
+.rec-go{display:block;font-size:12px;font-weight:600;color:var(--accent);margin-top:8px}
+
+.writeup{margin-top:34px;border-top:1.5px solid var(--line);padding-top:22px}
+.writeup.empty{max-width:640px}
+.writeup-bar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-bottom:6px}
+.writeup-h{font-size:14px;font-weight:600;color:var(--muted);margin:0}
+.writeup-p{font-family:var(--serif);font-size:16px;line-height:1.55;color:var(--muted);margin:6px 0 0}
+.writeup-acts{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.writeup-acts .btn{padding:7px 14px;font-size:14px}
+.behind{font-size:13px;color:var(--muted)}
+.paper{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:34px 40px;margin-top:12px;max-width:720px}
+.paper h1{font-size:clamp(22px,2.6vw,30px);line-height:1.15;letter-spacing:-.02em;margin:0 0 10px;font-weight:750}
+.paper-lede{font-family:var(--serif);font-size:18px;line-height:1.55;color:var(--muted);margin:0 0 22px;font-style:italic}
+.paper h2{font-size:13px;font-weight:600;color:var(--muted);margin:26px 0 7px}
+.paper p{font-family:var(--serif);font-size:17px;line-height:1.65;margin:0 0 12px}
+.paper .cites{margin-top:4px}
+.paper .cite{border-top:0;padding:5px 0}
+.paper .cite-text{font-size:16px}
+@media (max-width:820px){ .paper{padding:22px 20px} }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script src="config.js"></script>
+<script>
+(function(){
+"use strict";
+
+/* ---------- Fields ---------- */
+const FIELDS = [
+  {id:"cs", name:"Computer science", blurb:"How computers think, learn, and talk to each other",
+   glyph:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 14 7 24l10 10M31 14l10 10-10 10M27 10l-6 28"/></svg>'},
+  {id:"bio", name:"Biology", blurb:"How living things work, from single cells to whole ecosystems",
+   glyph:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><ellipse cx="24" cy="24" rx="17" ry="13"/><circle cx="21" cy="22" r="5"/><circle cx="33" cy="29" r="1.8" fill="currentColor"/><circle cx="12" cy="27" r="1.4" fill="currentColor"/></svg>'},
+  {id:"eng", name:"Engineering", blurb:"How people design and build machines, structures, and systems",
+   glyph:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"><path d="M6 36h36M10 36 24 12l14 24M17 24h14"/><circle cx="24" cy="12" r="2.5" fill="currentColor"/></svg>'},
+  {id:"phys", name:"Physics", blurb:"The rules behind matter, energy, space, and time",
+   glyph:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6"><ellipse cx="24" cy="24" rx="19" ry="7.5"/><ellipse cx="24" cy="24" rx="19" ry="7.5" transform="rotate(60 24 24)"/><ellipse cx="24" cy="24" rx="19" ry="7.5" transform="rotate(120 24 24)"/><circle cx="24" cy="24" r="2.8" fill="currentColor"/></svg>'},
+  {id:"chem", name:"Chemistry", blurb:"What stuff is made of and how it changes into other stuff",
+   glyph:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"><path d="M24 7l14 8v16l-14 8-14-8V15z"/><path d="M24 13l9 5M15 20v10"/></svg>'}
+];
+const fieldById = id => FIELDS.find(f=>f.id===id);
+
+/* ---------- Storage ---------- */
+const KEY = "trailhead-v1";
+function blank(){ return {trails:[], tags:{}, terms:{}, ideas:[]}; }
+let store = blank();
+try { const raw = localStorage.getItem(KEY); if(raw){ const p = JSON.parse(raw); if(p && Array.isArray(p.trails)) store = Object.assign(blank(), p); } } catch(e){}
+if(!Array.isArray(store.ideas)) store.ideas = [];
+// ideas used to live on a trail; lift any of those out so they survive new trails
+let migrated = false;
+store.trails.forEach(t => {
+  if(Array.isArray(t.ideas) && t.ideas.length){
+    t.ideas.forEach(x => { if(!store.ideas.some(y=>y.id===x.id)){ store.ideas.push(Object.assign({trailId:t.id, trailTopic:t.topic, field:t.field}, x)); migrated = true; } });
+  }
+  if(t.ideas){ delete t.ideas; migrated = true; }
+});
+if(migrated) save();
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e){} }
+
+/* ---------- AI access ---------- */
+const API = "/api";   // our backend, when this is running as a real site
+
+/* The backend speaks the same shape as the artifact's sample(): (input, opts) -> {text, truncated} */
+function backendSample(){
+  return async function(input, opts){
+    opts = opts || {};
+    const r = await fetch(API + "/ask", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ input, modelTier: opts.modelTier || "default" }),
+      signal: opts.signal
+    }).catch(err => { throw {code: (err && err.name==="AbortError") ? "cancelled" : "upstream_error", message:String(err)}; });
+    let data = null;
+    try { data = await r.json(); } catch(e){}
+    if(!r.ok){
+      const code = (data && data.code) || (r.status===429 ? "rate_limited" : r.status===413 ? "prompt_too_large" : "upstream_error");
+      throw {code, message:(data && data.message) || ("HTTP " + r.status)};
+    }
+    const text = String((data && data.text) || "");
+    if(!text.trim()) throw {code:"empty_completion", message:"no text"};
+    if(typeof opts.onText === "function") opts.onText({text, delta:text});
+    return {text, truncated: !!(data && data.truncated), modelTierApplied: opts.modelTier || "default"};
+  };
+}
+const samplePromise = (window.claude && typeof window.claude.use === "function")
+  ? window.claude.use("sample").catch(()=>null).then(s => s || probeBackend())
+  : probeBackend();
+async function probeBackend(){
+  try{
+    const r = await fetch(API + "/health", {method:"GET"});
+    if(!r.ok) return null;
+    const j = await r.json().catch(()=>null);
+    return (j && j.ok) ? backendSample() : null;
+  }catch(e){ return null; }
+}
+let aiState = "pending"; // pending | ok | off | denied
+samplePromise.then(s => { aiState = s ? "ok" : "off"; render(); });
+async function ai(){ const s = await samplePromise; if(!s) throw {code:"not_available_here"}; return s; }
+function errCopy(e){
+  const c = e && e.code;
+  if(c==="not_granted"||c==="sampling_disabled"||c==="not_declared"||c==="capability_disabled"){ aiState="denied"; return "AI features are turned off for this page. Allow Claude access to use them."; }
+  if(c==="not_available_here") return "AI features only work when this page is opened inside Claude.";
+  if(c==="rate_limited") return "Too many requests right now. Wait a moment, then try again.";
+  if(c==="session_expired") return "Your Claude session expired. Sign in again, then try again.";
+  if(c==="invalid_json") return "The answer came back in an unexpected shape. Try again.";
+  if(c==="truncated") return "The answer was cut off before it finished. Try again.";
+  if(c==="no_items") return "No usable articles came back for this topic. Try again, or phrase the topic a little differently.";
+  if(c==="prompt_too_large") return "That was too much for one message. Try sending it in smaller pieces.";
+  if(c==="refused") return "Claude declined that one. Try saying it a different way, or in shorter pieces.";
+  if(c==="cancelled") return "";
+  // the backend passes the upstream reason through; showing it beats guessing
+  const detail = e && e.message ? String(e.message).slice(0, 180) : "";
+  return detail ? "The AI service refused that request: " + detail : "Something interrupted the request. Try again.";
+}
+
+/* ---------- Helpers ---------- */
+/* Tolerant JSON: accepts fences, wrapper objects, stray prose, trailing commas */
+function looseParse(text){
+  let t = String(text||"").trim();
+  const fence = t.match(/```(?:json)?\s*([\s\S]*?)```/i); if(fence) t = fence[1].trim();
+  const tries = [t];
+  const fo = t.indexOf("{"), fa = t.indexOf("[");
+  const start = (fa!==-1 && (fo===-1 || fa<fo)) ? fa : fo;
+  if(start>-1){ const end = Math.max(t.lastIndexOf("}"), t.lastIndexOf("]")); if(end>start) tries.push(t.slice(start,end+1)); }
+  for(const c of tries){
+    for(const v of [c, c.replace(/,\s*([}\]])/g,"$1")]){ try { return JSON.parse(v); } catch(e){} }
+  }
+  // Truncated mid-object: cut back to the last complete value and close what's open
+  const fixed = repairTruncated(t);
+  if(fixed !== null){ try { return JSON.parse(fixed); } catch(e){} }
+  // JSON lines fallback
+  const rows = t.split("\n").map(l=>l.trim().replace(/,$/,"")).filter(l=>l.startsWith("{")&&l.endsWith("}"))
+    .map(l=>{ try{return JSON.parse(l);}catch(e){return null;} }).filter(Boolean);
+  if(rows.length) return rows;
+  return undefined;
+}
+function repairTruncated(t){
+  let inStr = false, esc = false, depth = 0, lastGood = -1;
+  const stack = [];
+  for(let i=0;i<t.length;i++){
+    const c = t[i];
+    if(inStr){
+      if(esc) esc = false;
+      else if(c === "\\") esc = true;
+      else if(c === '"') inStr = false;
+      continue;
+    }
+    if(c === '"'){ inStr = true; continue; }
+    if(c === "{" || c === "["){ stack.push(c === "{" ? "}" : "]"); depth++; continue; }
+    if(c === "}" || c === "]"){ stack.pop(); depth--; if(depth === 0) return null; continue; }
+    // a comma at depth 1+ means everything before it is a complete value
+    if(c === "," && depth > 0) lastGood = i;
+  }
+  if(!stack.length || lastGood < 0) return null;
+  // reopen the stack as it stood at lastGood
+  let head = t.slice(0, lastGood);
+  const st2 = []; inStr = false; esc = false;
+  for(let i=0;i<head.length;i++){
+    const c = head[i];
+    if(inStr){ if(esc) esc=false; else if(c==="\\") esc=true; else if(c==='"') inStr=false; continue; }
+    if(c==='"'){ inStr=true; continue; }
+    if(c==="{"||c==="[") st2.push(c==="{"?"}":"]");
+    else if(c==="}"||c==="]") st2.pop();
+  }
+  if(inStr || !st2.length) return null;
+  return head + st2.reverse().join("");
+}
+function findArray(v){
+  if(Array.isArray(v)) return v;
+  if(v && typeof v==="object"){ for(const k of Object.keys(v)){ if(Array.isArray(v[k]) && v[k].length && typeof v[k][0]==="object") return v[k]; } }
+  return null;
+}
+async function askJSON(prompt, opts){
+  const s = await ai();
+  const r = await s(prompt, opts);
+  const v = looseParse(r.text);
+  if(v===undefined){ console.warn("Trailhead: unparseable reply", r.truncated ? "(truncated)" : "", r.text); throw {code: r.truncated ? "truncated" : "invalid_json"}; }
+  return v;
+}
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s==null?"":s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid = () => Math.random().toString(36).slice(2,10) + Date.now().toString(36).slice(-4);
+const busy = {}; // transient loading/error state
+function scholar(a){ return "https://scholar.google.com/scholar?q=" + encodeURIComponent('"' + a.title + '" ' + (a.authors||"")); }
+/* Best available link to the real paper, and what to call it */
+function sourceLink(node){
+  const a = node.article || {}, c = (node.detail && node.detail.citation) || {};
+  const v = node.verified;
+  if(v && v.found && v.oaUrl) return {url:v.oaUrl, direct:true, note:"Free full text, found in the open-access record for this paper."};
+  if(v && v.found && v.doi) return {url:"https://doi.org/" + v.doi, direct:true, note:"Opens the publisher's page for this paper (verified DOI)."};
+  const doi = String(c.doi||"").trim().replace(/^https?:\/\/(dx\.)?doi\.org\//i,"").replace(/^doi:\s*/i,"");
+  if(doi) return {url:"https://doi.org/" + doi, direct:true, note:"Opens the publisher's page for this paper (DOI)."};
+  const u = String(c.url||"").trim();
+  if(/^https?:\/\//i.test(u)) return {url:u, direct:true, note:"Opens the page the paper is published on."};
+  return {url:scholar(a), direct:false, note:"No direct link was available, so this searches Google Scholar for the exact title."};
+}
+
+
+/* ---------- Live lookups against open scholarly databases ---------- */
+/* OpenAlex and Crossref are free, keyless and CORS-enabled. If this page's
+   network is blocked the probe fails once and everything degrades quietly. */
+const net = (function(){
+  let state = "unknown";           // unknown | on | off
+  let fails = 0;
+  const cache = {};
+  const MAIL = (window.TRAILHEAD_CONTACT || "trailhead-app@example.org");  // set in config.js
+
+  async function get(url, ms){
+    if(state==="off") return null;
+    const ctl = new AbortController();
+    const t = setTimeout(()=>ctl.abort(), ms||9000);
+    try{
+      const r = await fetch(url, {signal:ctl.signal, headers:{"Accept":"application/json"}});
+      if(!r.ok) throw new Error("http " + r.status);
+      const j = await r.json();
+      if(state!=="on"){ state = "on"; render(); }
+      fails = 0;
+      return j;
+    }catch(e){
+      if(++fails >= 2 && state!=="on"){ state = "off"; render(); }
+      return null;
+    }finally{ clearTimeout(t); }
+  }
+
+  const norm = t => String(t||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+  function close(a, b){
+    a = norm(a); b = norm(b);
+    if(!a || !b) return false;
+    if(a===b) return true;
+    if(a.length>18 && b.length>18 && (a.startsWith(b) || b.startsWith(a))) return true;
+    const A = new Set(a.split(" ").filter(w=>w.length>3)), B = b.split(" ").filter(w=>w.length>3);
+    if(!A.size || !B.length) return false;
+    const hit = B.filter(w=>A.has(w)).length;
+    return hit / Math.max(A.size, B.length) >= 0.8;
+  }
+  function unInvert(idx){
+    if(!idx || typeof idx !== "object") return "";
+    const out = [];
+    for(const w of Object.keys(idx)) for(const pos of idx[w]) out[pos] = w;
+    return out.join(" ").replace(/\s+/g," ").trim();
+  }
+  function peerStatus(w){
+    const src = (w.primary_location && w.primary_location.source) || null;
+    const st = src && String(src.type||"").toLowerCase();
+    const ty = String(w.type||"").toLowerCase();
+    if(w.is_retracted) return {peer:"retracted", label:"Retracted"};
+    if(ty==="preprint") return {peer:"no", label:"Preprint, not peer reviewed"};
+    if(st==="repository") return {peer:"no", label:(ty==="article"||!ty) ? "Preprint, not peer reviewed" : "Not peer reviewed"};
+    if(st==="journal" || st==="conference" || ty==="article" || ty==="review" || ty==="proceedings-article")
+      return {peer:"yes", label:"Peer reviewed"};
+    if(st==="book series" || ty==="book" || ty==="book-chapter") return {peer:"yes", label:"Peer reviewed (book)"};
+    return {peer:"unclear", label:"Review status unclear"};
+  }
+  function shape(w){
+    const src = (w.primary_location && w.primary_location.source) || {};
+    const oa = w.open_access || {};
+    const ps = peerStatus(w);
+    return {
+      found: true,
+      id: w.id || "",
+      doi: String(w.doi||"").replace(/^https?:\/\/(dx\.)?doi\.org\//i,""),
+      title: w.display_name || w.title || "",
+      year: w.publication_year || "",
+      venue: src.display_name || "",
+      venueType: String(src.type||w.type||"").toLowerCase(),
+      publisher: src.host_organization_name || "",
+      authors: (w.authorships||[]).map(x => (x.author && x.author.display_name) || "").filter(Boolean),
+      abstract: unInvert(w.abstract_inverted_index),
+      citedBy: w.cited_by_count || 0,
+      retracted: !!w.is_retracted,
+      peer: ps.peer, peerLabel: ps.label,
+      oaUrl: oa.oa_url || (w.best_oa_location && w.best_oa_location.pdf_url) || "",
+      isOA: !!oa.is_oa,
+      volume: (w.biblio && w.biblio.volume) || "",
+      issue: (w.biblio && w.biblio.issue) || "",
+      pages: (w.biblio && w.biblio.first_page) ? ((w.biblio.first_page) + (w.biblio.last_page ? "-" + w.biblio.last_page : "")) : ""
+    };
+  }
+
+  async function lookup(article){
+    const key = norm(article.title);
+    if(!key) return null;
+    if(cache[key] !== undefined) return cache[key];
+    const sel = "id,doi,display_name,publication_year,type,primary_location,open_access,best_oa_location,cited_by_count,authorships,biblio,abstract_inverted_index,is_retracted";
+    const base = "https://api.openalex.org/works?per-page=5&search=" + encodeURIComponent(article.title) + "&mailto=" + encodeURIComponent(MAIL);
+    let j = await get(base + "&select=" + sel);
+    if(!j && state !== "off") j = await get(base);   // a rejected field list shouldn't look like an outage
+    if(!j){ return null; }                      // offline or the request failed
+    const hits = (j.results||[]);
+    const m = hits.find(w => close(w.display_name || w.title, article.title));
+    const out = m ? shape(m) : {found:false};
+    cache[key] = out;
+    return out;
+  }
+  async function probe(){
+    if(state!=="unknown") return state;
+    await get("https://api.openalex.org/works?per-page=1&select=id&filter=doi:10.1038/nature14539&mailto=" + encodeURIComponent(MAIL), 8000);
+    if(state === "unknown"){ state = "off"; render(); }   // get() flips it to "on" when the request lands
+    return state;
+  }
+  /* Full text, when the backend can get it. Resolves null when it can't. */
+  async function fullText(v){
+    if(!v || !v.found) return null;
+    const key = "ft:" + (v.doi || v.title);
+    if(cache[key] !== undefined) return cache[key];
+    try{
+      const r = await fetch("/api/fulltext?" + new URLSearchParams({ doi: v.doi || "", title: v.title || "" }));
+      if(!r.ok){ cache[key] = null; return null; }
+      const j = await r.json();
+      const out = (j && j.text) ? {text:String(j.text).slice(0, 20000), source:String(j.source||"")} : null;
+      cache[key] = out;
+      return out;
+    }catch(e){ cache[key] = null; return null; }
+  }
+  return { lookup, probe, fullText, get state(){ return state; } };
+})();
+
+/* Merge a verified record into an article and its citation */
+function applyVerified(node, v){
+  if(!v) return;
+  node.verified = v;
+  if(!v.found) return;
+  const a = node.article;
+  if(v.title) a.title = v.title;
+  if(v.year) a.year = v.year;
+  if(v.venue) a.venue = v.venue;
+  a.peer = v.peer; a.peerLabel = v.peerLabel; a.citedBy = v.citedBy; a.retracted = v.retracted;
+  a.preprint = v.peer === "no";
+  if(node.detail){
+    const c = node.detail.citation = node.detail.citation || {};
+    if(v.doi) c.doi = v.doi;
+    if(v.venue) c.container = v.venue;
+    if(v.year) c.year = String(v.year);
+    if(v.title) c.title = v.title;
+    if(v.publisher) c.publisher = v.publisher;
+    if(v.volume) c.volume = v.volume;
+    if(v.issue) c.issue = v.issue;
+    if(v.pages) c.pages = v.pages;
+    if(v.authors && v.authors.length) c.authors = v.authors.map(n=>{
+      const parts = String(n).trim().split(/\s+/);
+      return {family: parts.pop() || n, given: parts.join(" ")};
+    });
+    c.type = v.peer === "no" ? "preprint" : (v.venueType === "conference" ? "conference" : c.type || "journal");
+  }
+}
+/* Check a paper that predates verification, or whose check never ran */
+const verifying = {};
+async function ensureVerified(trail, node){
+  if(!node || node.kind!=="article" || node.verified !== undefined || verifying[node.id]) return;
+  if(net.state === "off") return;
+  verifying[node.id] = true;
+  const v = await net.lookup(node.article);
+  if(v){ applyVerified(node, v); save(); render(); }
+  delete verifying[node.id];
+}
+async function ensureCandidatesVerified(trail, node){
+  const list = (node && node.candidates) || [];
+  const todo = list.filter(c => !c.checked);
+  if(!todo.length || net.state === "off" || verifying["c:"+node.id]) return;
+  verifying["c:"+node.id] = true;
+  await Promise.all(todo.map(async c => {
+    const v = await net.lookup(c);
+    if(!v) return;
+    c.checked = true;
+    if(v.found){
+      c.title = v.title || c.title; c.year = v.year || c.year; c.venue = v.venue || c.venue;
+      c.peer = v.peer; c.peerLabel = v.peerLabel; c.citedBy = v.citedBy; c.retracted = v.retracted;
+      c.preprint = v.peer === "no"; c.verified = true;
+    } else c.verified = false;
+  }));
+  delete verifying["c:"+node.id];
+  save(); render();
+}
+
+/* What a paper's peer-review state is, verified first, AI's guess second */
+const VENUE_PEER = {journal:"yes", conference:"yes", book:"yes", chapter:"yes", proceedings:"yes", workshop:"yes", preprint:"no", thesis:"unclear", report:"unclear", dataset:"no"};
+function peerOf(node){
+  const a = node.article || {};
+  if(a.retracted) return {k:"retracted", label:"Retracted"};
+  if(a.peer) return {k:a.peer, label:a.peerLabel || ""};                       // confirmed by lookup
+  const d = node.detail || {};
+  const guess = a.peerGuess
+    || (typeof d.peerReviewed === "boolean" ? (d.peerReviewed ? "yes" : "no") : null)
+    || VENUE_PEER[String(a.venueType||"").toLowerCase()]
+    || VENUE_PEER[String((d.citation && d.citation.type)||"").toLowerCase()]
+    || (a.preprint ? "no" : null);
+  if(guess==="yes") return {k:"yes", label:"Peer reviewed"};
+  if(guess==="no") return {k:"no", label: (a.preprint || String(a.venueType||"")==="preprint" || String((d.citation&&d.citation.type)||"")==="preprint") ? "Preprint, not peer reviewed" : "Not peer reviewed"};
+  return {k:"unclear", label:"Review status unclear"};
+}
+
+/* ---------- App state ---------- */
+const app = { view:"home", fieldId:null, cats:null, trailId:null, trailOpen:false, lim:null, ideaId:null, ideaReturn:null, backTo:"home" };
+const curTrail = () => store.trails.find(t=>t.id===app.trailId);
+
+function bumpTags(trail, tags, amt){
+  if(!trail) return;
+  if(!trail.tags) trail.tags = {};
+  (tags||[]).forEach(t=>{ const k = String(t).toLowerCase().trim(); if(!k) return;
+    trail.tags[k] = Math.max(-6, Math.min(12, (trail.tags[k]||0) + amt)); });
+}
+function interestText(trail){
+  const e = Object.entries((trail && trail.tags) || {});
+  const likes = e.filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,8).map(x=>x[0]);
+  const meh = e.filter(x=>x[1]<0).sort((a,b)=>a[1]-b[1]).slice(0,5).map(x=>x[0]);
+  return "Leans toward: " + (likes.join(", ")||"no signal yet") + ". Less drawn to: " + (meh.join(", ")||"no signal yet") + ".";
+}
+function pathTo(trail, id){ const out=[]; let n = trail.nodes[id]; while(n){ out.unshift(n); n = trail.nodes[n.parentId]; } return out; }
+
+/* ---------- Trail creation ---------- */
+function startTrail(fieldId, topic){
+  topic = topic.trim(); if(!topic) return;
+  const root = {id:uid(), parentId:null, kind:"root", created:Date.now(), candidates:null};
+  const t = {id:uid(), field:fieldId, topic, created:Date.now(), updated:Date.now(), rootId:root.id,
+    nodes:{[root.id]:root}, cur:{nodeId:root.id, mode:"pick"}, seen:[], chat:[], tags:{}, lens:""};
+  store.trails.unshift(t); store.trails = store.trails.slice(0,12); save();
+  app.trailId = t.id; app.view = "trail"; render();
+  loadCandidates(t, root, false);
+}
+
+/* ---------- AI: categories ---------- */
+async function loadCats(fresh){
+  const f = fieldById(app.fieldId);
+  app.cats = {loading:true, items: app.cats && app.cats.items}; render();
+  try{
+    const prompt = `List 8 distinct research areas within ${f.name} that a curious beginner could explore. Cover a wide spread of the field.
+Use plain language that someone with no background understands. No jargon in names; if a technical name is essential, explain it.
+Reply with only a JSON array of objects: {"name": string (max 5 words), "explainer": string (one sentence a 13-year-old would understand), "question": string (one intriguing question researchers in this area ask)}.`
+      + (fresh ? `\nAvoid these, already shown: ${(app.cats.items||[]).map(c=>c.name).join("; ")}.` : "");
+    const res = await askJSON(prompt, {modelTier:"quick", cache: fresh ? false : {gcTime: 6*3600e3}});
+    const items = (findArray(res)||[]).filter(x=>x&&x.name).slice(0,8);
+    if(!items.length) throw {code:"invalid_json"};
+    app.cats = {items};
+  }catch(e){ app.cats = {items: app.cats && app.cats.items, error: errCopy(e)}; }
+  if(app.view==="field") render();
+}
+
+/* ---------- AI: five candidate articles ---------- */
+async function loadCandidates(trail, node, fresh){
+  const key = node.id+":c";
+  if(busy[key] && busy[key].loading) return;
+  if(fresh && node.candidates){
+    node.candidates.forEach(c=>{ trail.seen.push(c.title); bumpTags(trail, c.tags, -0.5); });
+  }
+  busy[key] = {loading:true}; render();
+  const f = fieldById(trail.field);
+  const path = pathTo(trail, node.id).filter(n=>n.kind==="article");
+  const here = node.kind==="article" ? node.article : null;
+  const forIdea = node.kind==="explore" ? (ideaById(node.ideaId) || null) : null;
+  const seen = trail.seen.concat(Object.values(trail.nodes).filter(n=>n.article).map(n=>n.article.title)).slice(-70);
+  const prompt = `You are a careful research librarian helping someone explore the academic literature.
+Field: ${f.name}. Starting topic: "${trail.topic}".
+${path.length ? "Articles the reader went deeper on, in order: " + path.map(n=>`"${n.article.title}" (${n.article.year})`).join(" -> ") + "." : "The reader is just starting."}
+${forIdea ? `THE READER IS TESTING AN IDEA OF THEIR OWN: "${forIdea.title}"${forIdea.gap ? " — " + forIdea.gap : ""}. They came here to read up on: "${node.topic}". Every one of the five must bear on that: work that already tried it, work that gives them a method, work that measures the thing they want to measure, or work that would tell them it won't work. Say in each headline what it brings to that question.` : ""}
+${here ? `They just finished "${here.title}" (${here.authors}, ${here.year}) and chose to go deeper from it. Pick papers that branch outward from it: work it builds on, work that built on it, rival approaches, applications, open problems.` : "Pick papers that together map the topic."}
+${trail.lens ? `APPLICATION FILTER: the reader wants all five papers aimed at this application: "${trail.lens}". Every paper must genuinely connect "${trail.topic}" to that application, e.g. work done for or tested in that setting. Still fill all five slots below. If a slot has no real paper in that application, use the closest real work that clearly serves it, never a made-up one.` : `Do not let earlier choices lock the reader into one narrow sub-topic: the five must span clearly different sub-areas of "${trail.topic}", and at most two may share the same specific technology, material, or method.`}
+Reader interest profile from their choices on THIS trail only: ${interestText(trail)} Use it lightly, to steer WHICH sub-topic fills a slot (about 2 of the 5), never to drop a slot or repeat the same narrow sub-topic.
+
+Give exactly 5 real, published papers that you are highly confident exist with the exact title, authors, year, and venue. Never invent a paper. If unsure a paper exists, choose a different one you are sure of.
+The 5 papers MUST fill these 5 different slots, one paper each, so the set is a true mix and not all overviews or all about impact and adoption:
+1. "Big picture": ${node.kind==="root" ? "a review or survey that maps the topic" : forIdea ? "a review or survey covering the area their idea sits in" : "a review, survey, or perspective on the sub-area this branch has reached"}.
+2. "How it works": a technical paper on the core mechanism or underlying science: the physics, chemistry, biology, math, or algorithm that makes the thing function.
+3. "How it's built": a technical design or engineering paper: a specific system, device, architecture, method, or fabrication/implementation, with real design choices and trade-offs.
+4. "Testing it": an experimental, measurement, benchmark, or modeling study that evaluates performance, limits, or failure modes with data.
+5. "Wild card": from a different corner than the other four: a foundational classic that started the area, a rival approach, an unexpected cross-field application, or the human, social, or ethical side.
+At most ONE of the five may be mainly about effects, user experience, adoption, or society. Slots 2, 3, and 4 must be primary research that gets into technical details, not reviews.
+Also spread across sub-areas and eras (include at least one older foundational paper and at least one from the last five years).
+Source quality: only established peer-reviewed journals, reputable society or university publishers, major conferences, or well-known preprint servers (arXiv, bioRxiv, ChemRxiv). Exclude anything from publishers or standalone journals on Beall's list of potentially predatory publishers (for example OMICS International, SCIRP, and similar).
+Do not repeat any of these titles: ${seen.length ? seen.map(t=>`"${t}"`).join("; ") : "(none)"}.
+
+Reply with only a raw JSON array (starting with [ and ending with ]), no wrapper object, no code fence, no commentary. Each of the 5 objects:
+{"title": string, "authors": string (e.g. "Watson, J. D. & Crick, F. H. C." or "Smith, A. et al."), "year": number, "venue": string, "preprint": boolean, "headline": string (plain-language hook, max 14 words, accurate, no jargon, makes a curious person want to click), "kind": one of "Big picture" | "How it works" | "How it's built" | "Testing it" | "Wild card", "venueType": one of "journal" | "conference" | "preprint" | "book" | "thesis" | "report" (what kind of venue it appeared in), "angle": string (2-4 words on what corner of the field it represents), "tags": [3 short lowercase interest tags]}
+Return them in slot order 1-5.`;
+  try{
+    const res = await askJSON(prompt, {cache:false});
+    const list = (findArray(res)||[]).filter(x=>x && (x.title||x.headline)).map(x=>({
+      title: String(x.title||x.headline), authors: String(x.authors||x.author||""), year: x.year||"", venue: String(x.venue||x.journal||""),
+      preprint: !!x.preprint, headline: String(x.headline||x.title), angle: String(x.angle||""), kind: String(x.kind||""), tags: Array.isArray(x.tags)?x.tags:[],
+      venueType: String(x.venueType||"").toLowerCase(),
+      peerGuess: (String(x.venueType||"").toLowerCase()==="preprint" || x.preprint) ? "no" : ["journal","conference","book"].includes(String(x.venueType||"").toLowerCase()) ? "yes" : "unclear"
+    })).slice(0,5);
+    if(!list.length){ console.warn("Trailhead: no articles in reply", res); throw {code:"no_items"}; }
+    node.candidates = list; trail.updated = Date.now(); save();
+    busy[key] = null;
+    render();
+    // Check each one against OpenAlex; quiet no-op when this page can't reach the network
+    await Promise.all(list.map(async c => {
+      const v = await net.lookup(c);
+      if(!v) return;
+      c.checked = true;
+      if(v.found){
+        c.title = v.title || c.title; c.year = v.year || c.year; c.venue = v.venue || c.venue;
+        c.peer = v.peer; c.peerLabel = v.peerLabel; c.citedBy = v.citedBy; c.retracted = v.retracted;
+        c.preprint = v.peer === "no"; c.verified = true;
+      } else { c.verified = false; }
+    }));
+    save();
+  }catch(e){ busy[key] = {error: errCopy(e)}; }
+  render();
+}
+
+/* ---------- AI: summary + crash course ---------- */
+const detailInflight = {};
+function loadDetail(trail, node){
+  if(!detailInflight[node.id]) detailInflight[node.id] = loadDetailRun(trail, node).finally(()=>{ delete detailInflight[node.id]; });
+  return detailInflight[node.id];
+}
+async function loadDetailRun(trail, node){
+  const key = node.id+":d";
+  if(busy[key] && busy[key].loading) return;
+  busy[key] = {loading:true}; render();
+  const a = node.article, f = fieldById(trail.field);
+  const known = Object.values(store.terms).map(t=>t.term).slice(-90);
+  const v = await net.lookup(a);
+  if(v){ applyVerified(node, v); if(v.found) busy[key] = {loading:true}; render(); }
+  const real = v && v.found ? v : null;
+  const ft = real ? await net.fullText(real) : null;
+  const prompt = `You are explaining a research paper to a smart newcomer to ${f.name}.
+Paper: "${a.title}" by ${a.authors} (${a.year}), ${a.venue}.
+${real ? `VERIFIED RECORD, looked up live just now — trust these over your own memory:
+- Exact title: ${real.title}
+- Authors: ${real.authors.slice(0,12).join(", ")}${real.authors.length>12?", et al.":""}
+- Year: ${real.year}. Venue: ${real.venue} (${real.peerLabel}). ${real.doi?"DOI: "+real.doi:""}
+- Cited by ${real.citedBy} other works.${real.retracted?" THIS PAPER HAS BEEN RETRACTED — say so plainly in the first sentence of the summary and explain what that means.":""}
+${real.abstract ? "- The paper's REAL abstract:\n" + real.abstract.slice(0,3000) : "- No abstract was available from the database."}
+Use the real abstract as your anchor for what this paper is and claims. Go beyond it with what you know of the full paper's methods and results, but never contradict it.` : ""}
+${ft ? `\nTHE PAPER'S ACTUAL FULL TEXT (fetched live from ${ft.source} \u2014 this is the paper itself, so it outranks everything else, including your own memory. Take the results, numbers and limitations straight from it):\n${ft.text.slice(0, 10000)}\n` : ""}
+${node.question ? `The reader arrived here by asking: "${node.question}"` : ""}
+
+1. Pitch the WHOLE paper, not its abstract. Abstracts are often teasers; the reader should get the real payoff here. Imagine a science journalist's 60-second pitch that pulls out only the most important and most interesting parts of the full paper:
+   - the question and why it matters,
+   - the clever part of how they did it (for technical papers: the actual mechanism, design, or method in simple concrete steps, like what each part does or how the test was set up),
+   - what they actually found, in detail. This is the most important part: report the RESULTS the paper reports in its results section, figures and tables, not the vague promise in its abstract. Abstracts say "we demonstrate improved performance"; the results say how much, measured how, compared to what, and under what conditions. Give the concrete numbers, units, test conditions, and comparisons you reliably know for this specific paper. If you are not sure of a number, say what was measured and in which direction it moved rather than inventing a figure, but never fall back on an abstract-style claim when you know the real result.
+   Spend at least a third of the summary on these results.
+   For a review or survey, give its real conclusions: the main approaches it compares, which work best and why, what is still unsolved. Never write things like "this paper explores" or "this review discusses" without saying what it concluded. Don't tease; deliver.
+   Voice: write for a curious reader who is new to this field but is not a child. Clear, direct, and specific, the way a good science magazine writes for adults. No baby talk, no exclamation marks, no "imagine you're a tiny ball" analogies, no talking down.
+   THIS IS A SUMMARY, NOT A CONVERSATION. Write ABOUT the paper, never TO the reader. Banned from the summary entirely: "I", "me", "my", "you", "your", "Note:", "note that", "it's worth saying", "as far as I can tell", "I believe", "the title given", anything about which paper you think this is, and any remark about your own confidence, memory or sources. "We" is allowed only for the paper's own authors. The reader wants the paper explained, not your process.
+   If something is uncertain, that uncertainty belongs in the "note" field below, never in the summary. If you are unsure of a number, write the result in general terms inside the summary and say nothing about being unsure.
+   Do NOT avoid the field's real technical terms: use them, because every term you use gets defined below and highlighted so the reader can hover it for the meaning. Give enough context around each term that the sentence still makes sense, then let the definition do the rest. Explain ideas plainly, but keep the precision of the paper.
+   Use 180-260 words in 3 paragraphs, with the final paragraph devoted to the results and what they mean. Base it only on what you reliably know about this paper; if you are unsure of a number or detail, describe the result in general terms rather than invent it.
+2. Write a one-sentence key finding: the single most important concrete result, in the same voice. Same rule — about the paper, no commentary about yourself.
+2b. "note": leave it null almost always. Use it ONLY when something would mislead the reader otherwise: the title, authors or year you were given do not match any paper you recognize, or they appear to name a different paper than the one you are describing, or you cannot confidently identify the work at all. Then write ONE plain sentence stating the problem and what the summary actually describes, with no apology and no explanation of how you know. Example: "The title above does not match a paper by these authors; this summary describes PrivacEye (ETRA 2019), which the record most likely refers to." It is a flag on the record, not part of the summary.
+3. REQUIRED: pick the 5-7 most important technical terms or concepts a reader needs for this paper and for papers near it. These must be real terms from the field, not everyday words.
+   The summary MUST actually use all 5-7 of them, and you MUST wrap the first use of each in double square brackets, spelled exactly as in your terms list. Example: "Light is trapped inside a [[waveguide]] and released by a [[diffraction grating]]." A summary with no [[brackets]] is a failed answer.
+   The DEFINITIONS are different from the summary: write each one so a middle schooler (age 11-13) understands it. One or two short sentences, everyday words, no other technical terms inside the definition unless you also define them in the same breath. Add a short everyday comparison when it genuinely helps (leave analogy as "" when it doesn't). The summary stays at an adult reading level; only these definitions are simplified, so the reader can hover a hard word and immediately get it.
+   REQUIRED: write 3-5 statements on how these terms relate to each other, each naming two of the terms.
+4. REQUIRED: list 2-4 real limitations of this paper's work: what it cannot do, where it breaks down, what the authors admit is unsolved, or what a later paper would need to fix. Prefer limitations the authors themselves name. Each gets a short name (max 7 words, specific to this work, not generic like "more research needed") and 1-2 sentences saying what the limitation is and why it matters for anyone building on this.
+The reader already knows these terms from earlier lessons, so do not put them in your terms list; you may still bracket them in the summary if you use them, and list which of them this paper builds on: ${known.length ? known.join("; ") : "(none yet)"}.
+
+Reply with only a JSON object:
+{"summary": [3 strings, one per paragraph, with [[term]] markers], "note": null | string (one sentence; see 2b — null unless the paper could not be confidently identified), "keyFinding": string (the single most important result, concrete), "lessonIntro": string (1-2 simple sentences on why these words matter), "terms": [{"term": string, "meaning": string, "analogy": string or ""}], "connections": [{"from": string, "to": string, "how": string (short sentence)}], "limitations": [{"name": string, "detail": string}], "buildsOn": [strings from the known list, may be empty], "tags": [3-5 short lowercase interest tags], "peerReviewed": boolean (true if this appeared in a peer-reviewed journal, a peer-reviewed conference, or an edited scholarly book; false if it is a preprint, a technical report, a thesis, or anything not peer reviewed), "venueKind": one of "journal"|"conference"|"preprint"|"book"|"chapter"|"thesis"|"report", "citation": {"type": "journal"|"conference"|"preprint"|"book"|"chapter"|"report", "authors": [{"family": string, "given": string}] (up to 8; stop there even if there are more), "year": string, "title": string (exact published title), "container": string (full journal, proceedings, or preprint-server name, not abbreviated), "volume": string, "issue": string, "pages": string (page range or article number), "publisher": string, "doi": string (bare DOI like 10.1038/nature14539), "url": string}}
+For citation fields, use "" for anything you are not certain of. Never guess a DOI, volume, issue, or page numbers.`;
+  try{
+    let d = await askJSON(prompt, {cache:false}).catch(async e => {
+      // a reply cut off mid-JSON: ask again for a leaner one rather than failing on the reader
+      if(e && (e.code==="invalid_json" || e.code==="truncated")){
+        return await askJSON(prompt + "\n\nIMPORTANT: your last reply was cut off before the JSON closed. Send the same object but leaner so it finishes: 5 terms, 3 connections, 2 limitations, at most 4 authors, and keep every string short.", {cache:false});
+      }
+      throw e;
+    });
+    if(Array.isArray(d)) d = d[0];
+    if(!d || !d.summary) throw {code:"invalid_json"};
+    if(!Array.isArray(d.terms)) d.terms = []; if(!Array.isArray(d.connections)) d.connections = [];
+    if(d.venueKind && !node.article.venueType) node.article.venueType = String(d.venueKind).toLowerCase();
+    d.limitations = (Array.isArray(d.limitations) ? d.limitations : []).filter(x=>x && x.name).map(x=>({name:String(x.name), detail:String(x.detail||"")}));
+    d.note = (typeof d.note === "string" && d.note.trim()) ? d.note.trim() : "";
+    node.detail = d; trail.updated = Date.now();
+    if(v) applyVerified(node, v);
+    if(node.cited === undefined){ node.cited = true; node.citedAt = Date.now(); }
+    (d.terms||[]).forEach(t=>{ if(t && t.term){ const k=t.term.toLowerCase(); if(!store.terms[k]) store.terms[k] = {term:t.term, meaning:t.meaning, analogy:t.analogy||"", from:a.title}; } });
+    bumpTags(trail, d.tags, 0.5);
+    save(); busy[key] = null;
+  }catch(e){ busy[key] = {error: errCopy(e)}; }
+  render();
+  return node.detail || null;
+}
+
+/* ---------- Navigation actions ---------- */
+function openCandidate(trail, parent, cand){
+  app.citedOpen = false;
+  let child = Object.values(trail.nodes).find(n=>n.parentId===parent.id && n.article && n.article.title===cand.title);
+  if(!child){
+    child = {id:uid(), parentId:parent.id, kind:"article", origin:"pick", created:Date.now(), article:cand,
+      detail:null, candidates:null, returnTo:{nodeId:parent.id, mode:"pick"}};
+    trail.nodes[child.id] = child;
+  }
+  bumpTags(trail, cand.tags, 1);
+  if(cand.kind) bumpTags(trail, ["paper type: " + cand.kind.toLowerCase()], 1);
+  trail.cur = {nodeId:child.id, mode:"read"}; save(); render(); scrollTop();
+  if(!child.detail) loadDetail(trail, child);
+}
+function goBack(trail, node){
+  app.citedOpen = false;
+  if(!node || node.kind!=="article"){ jumpTo(trail, (node&&node.parentId)||trail.rootId); return; }
+  if(node.verdict!=="continued" && node.verdict!=="backed"){ node.verdict="backed"; bumpTags(trail, node.article.tags, -1.5); }
+  trail.cur = Object.assign({}, node.returnTo || {nodeId:node.parentId, mode:"pick"});
+  if(!trail.nodes[trail.cur.nodeId]) trail.cur = {nodeId:trail.rootId, mode:"pick"};
+  save(); render(); scrollTop();
+}
+function goDeeper(trail, node){
+  app.citedOpen = false;
+  if(!node || node.kind!=="article") return;
+  if(node.verdict==="backed") bumpTags(trail, node.article.tags, 1.5);
+  if(node.verdict!=="continued"){ node.verdict="continued"; bumpTags(trail, node.article.tags, 2); }
+  trail.cur = {nodeId:node.id, mode:"pick"}; save(); render(); scrollTop();
+  if(!node.candidates) loadCandidates(trail, node, false);
+}
+function jumpTo(trail, nodeId){
+  app.citedOpen = false;
+  const n = trail.nodes[nodeId]; if(!n) return;
+  trail.cur = {nodeId, mode: (n.kind==="root"||n.kind==="explore") ? "pick" : "read"};
+  save(); app.trailOpen=false; render(); scrollTop();
+  if((n.kind==="root"||n.kind==="explore") && !n.candidates) loadCandidates(trail, n, false);
+  if(n.kind==="article" && !n.detail) loadDetail(trail, n);
+}
+function scrollTop(){ const m = $(".col-main"); if(m) window.scrollTo({top:0}); }
+
+/* ---------- Chat ---------- */
+const GUIDE = "Scout";
+function articleLine(n){
+  const a = n.article;
+  return `"${a.title}" (${a.authors||"unknown authors"}, ${a.year||"n.d."}, ${a.venue||""}); headline: "${a.headline||""}"` + (n.detail && n.detail.keyFinding ? `; key finding: ${n.detail.keyFinding}` : "");
+}
+function recentChat(trail, dropLast){
+  const list = dropLast ? trail.chat.slice(0,-dropLast) : trail.chat;
+  return list.slice(-8).map(m => (m.role==="user" ? "Reader: " : "Scout: ") + m.content).join("\n");
+}
+function setChatStatus(t){ busy.chat = {loading:true, status:t}; const el = document.getElementById("scout-status"); if(el) el.textContent = t; else render(); }
+async function sendChat(text){
+  const trail = curTrail(); text = text.trim(); if(!trail || !text) return;
+  if(busy.chat && busy.chat.loading) return;
+  trail.chat.push({role:"user", content:text});
+  busy.chat = {loading:true, status:"Looking for papers that answer this…"}; save(); render(); focusChat();
+  const f = fieldById(trail.field);
+  const here = trail.nodes[trail.cur.nodeId];
+
+  // Everything the reader has seen: opened articles, headlines shown, and sets they skipped
+  const opened = Object.values(trail.nodes).filter(n=>n.kind==="article").sort((a,b)=>a.created-b.created);
+  const openedIds = {}; opened.forEach((n,i)=> openedIds["A"+(i+1)] = n);
+  const openedTitles = new Set(opened.map(n=>n.article.title.toLowerCase()));
+  const shown = [];
+  Object.values(trail.nodes).forEach(n => (n.candidates||[]).forEach(c => { if(!openedTitles.has(String(c.title).toLowerCase())) shown.push({parentId:n.id, cand:c}); }));
+  const shownIds = {}; shown.forEach((x,i)=> shownIds["S"+(i+1)] = x);
+  const skipped = trail.seen.filter(t => !openedTitles.has(String(t).toLowerCase())).slice(-40);
+  const recent = recentChat(trail, 1);
+  const hereText = trail.cur.mode==="read" && here.article
+    ? `reading [${Object.keys(openedIds).find(k=>openedIds[k]===here)}] "${here.article.title}"`
+    : here.kind==="root" ? "looking at the first five headlines for the topic" : here.kind==="explore" ? `looking at five headlines they asked for while working on their own idea, "${(ideaById(here.ideaId)||{}).title||""}"` : `looking at five headlines that branch from "${here.article.title}"`;
+
+  const pickPrompt = `You are ${GUIDE}, the trail guide in a research-exploration app. Field: ${f.name}. Topic: "${trail.topic}".
+Rule: research questions are never answered from your own general knowledge — every research answer must come from a specific paper the reader can read. Questions about YOU and this app are the exception and you answer those yourself.
+
+First decide which kind of question this is:
+- ABOUT THIS APP: the reader is asking about you, how this app works, what you can see, how the papers or summaries are produced, how trustworthy they are, or what to do next in the app. Examples: "do you have the whole article or just the abstract?", "how do you pick these?", "are these real?", "can you search the internet?", "what should I ask?", "how does the works cited work?". Answer these yourself, truthfully, using the facts below. No paper is needed.
+- ANSWERED HERE: a paper the reader has already opened genuinely contains the answer. This covers questions about the article in front of them ("what does X mean here?", "how did they test it?", "why does that matter?") and questions another opened paper already settled. Prefer this whenever an opened paper really does answer the question: don't send the reader somewhere new just to repeat what they already have.
+- NEEDS NEW WORK: no opened paper answers it. This covers "has anyone tried...?", "why hasn't this been done?", "who disagrees?", "what came after this?" and anything reaching past what they've read.
+Choose ANSWERED HERE only when the paper truly contains the answer, not merely the topic.
+
+TRUE FACTS ABOUT YOURSELF, for ABOUT THIS APP answers. Be straight with the reader; never overstate what you have:
+- You are Claude, running inside this page. ${net.state==="off"
+  ? "This page has no internet access — outbound requests are blocked by the platform it is published on. The app tries to look each paper up in OpenAlex, a free database of 250 million scholarly works, but those requests do not get through, so nothing here is verified against a database and you are working from your training knowledge alone. Say that plainly if asked. It is why peer-review labels are marked unconfirmed."
+  : "The app looks papers up live in OpenAlex, a free database of 250 million scholarly works, so for most papers it has the REAL title, authors, year, venue, DOI, citation count, peer-review status and real abstract, and hands those to you."}
+- Either way you never read the paper's full text or PDF.
+- Beyond the abstract and that record, what you know comes from training, which for well-known papers covers methods, experimental setup, results and figures, assumptions, and how later work responded. That part is recall, not reading, and for obscure papers it may be thin or absent.
+- So when the reader asks you something the summary doesn't cover, you answer from that deeper knowledge and tell them how confident you are. You never invent a number or a detail, and "I don't recall that — check the original" is a fine answer.
+- Summaries are written from that same knowledge, not copied, so a specific figure can be wrong or outdated. The reader should open the original to confirm anything they rely on. Every article page has an "Open the original article" button, and the works cited page lists every source.
+- You only choose papers you are highly confident really exist, from reputable peer-reviewed venues or well-known preprint servers, and you avoid publishers on Beall's list of potentially predatory journals. You never invent a paper, and when you aren't confident you say so instead of guessing.
+- Your knowledge has a cutoff, so very recent work may be missing.
+- How the app works: the reader picks five headlines at a time, each a different kind of paper; opening one gives a summary, a vocabulary crash course, and that paper's limitations; every opened paper joins their trail and their works cited, which they can download.
+
+Right now the reader is ${hereText}.
+Articles the reader has already OPENED (an ANSWERED HERE choice must be one of these ids):
+${opened.length ? Object.entries(openedIds).map(([k,n])=>`[${k}] ${articleLine(n)}`).join("\n") : "(none yet)"}
+Headlines the reader has already SEEN (context only — never choose one of these as a new paper):
+${shown.length ? Object.entries(shownIds).map(([k,x])=>`[${k}] "${x.cand.title}" (${x.cand.authors}, ${x.cand.year})`).join("\n") : "(none)"}
+Titles the reader skipped past: ${skipped.length ? skipped.map(t=>`"${t}"`).join("; ") : "(none)"}
+${recent ? "Recent conversation:\n" + recent : ""}
+Reader's question: "${text}"
+
+If ABOUT THIS APP: write the answer yourself in the "selfAnswer" field and stop. Return no papers and no answeredHere. Be direct and concrete, under 120 words, plain text, written so a middle schooler follows it. Answer the actual question asked rather than listing everything above.
+If ANSWERED HERE: name the opened article's id and stop. Return no papers.
+If NEEDS NEW WORK: first write a real answer to the question in "intro", then offer the papers it rests on.
+The intro is the substance of your reply, not a label for the cards: answer what they actually asked, in 3-5 sentences, saying what this body of work shows — where researchers agree, where they disagree, and what is still unsettled. Base every claim on the papers you are about to list and nothing else; if they only partly answer it, say which part is covered and which isn't. Don't describe the cards ("here are three papers…"), don't number them, and don't tell the reader to pick one — the app already does that. Middle-school reading level: short sentences, everyday words, any technical term explained as you use it. Plain text, no headings or bullets.
+Then search the literature beyond this trail. Think of 3 different real papers that could answer the question, and make them genuinely different from each other — different angles, methods, research groups, or eras — so the reader has a real choice rather than three versions of the same paper. Rank them by how directly their actual content answers the question, best first. The reader will pick one to read, so each "why" must say what that particular paper brings.
+Every new paper must be real: one you are highly confident exists with exact title, authors, year, and venue, from a reputable peer-reviewed venue or well-known preprint server, never from a publisher on Beall's list. None may be a paper already opened or seen above. If you can't find any paper you're confident about, return an empty list rather than guess.
+
+Reply with only a JSON object:
+{"selfAnswer": null | string (your own answer, for ABOUT THIS APP questions only),
+ "intro": null | string (your answer to the question, 3-5 sentences, for NEEDS NEW WORK only),
+ "answeredHere": null | {"id": string (an opened article id like "A2"), "why": string (one short sentence: why this paper already answers it)},
+ "papers": [ {"title":string,"authors":string,"year":number,"venue":string,"preprint":boolean,"headline":string (plain language, max 14 words),"kind":"Big picture"|"How it works"|"How it's built"|"Testing it"|"Wild card","venueType":"journal"|"conference"|"preprint"|"book"|"thesis"|"report","angle":string (2-4 words),"tags":[3 lowercase tags],"why":string (one short sentence, max 18 words: what this specific paper shows that answers the question)} ] (empty when answeredHere is set, otherwise up to 3, best first)}`;
+
+  try{
+    const raw = await askJSON(pickPrompt, {cache:false});
+    const norm = t => String(t||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+    const known = new Set([...opened.map(n=>norm(n.article.title)), ...shown.map(x=>norm(x.cand.title)), ...trail.seen.map(norm)]);
+
+    // A question about the app itself
+    const selfAns = raw && typeof raw.selfAnswer === "string" ? raw.selfAnswer.trim() : "";
+    if(selfAns){
+      trail.chat.push({role:"assistant", content:selfAns, meta:true});
+      busy.chat = null; save(); render(); return;
+    }
+
+    // A paper already on the trail answers it — nothing to load, so answer now
+    const ah = raw && raw.answeredHere;
+    if(ah && ah.id && openedIds[ah.id]){
+      const target = openedIds[ah.id];
+      const prev = Object.assign({}, trail.cur);
+      const moved = !(trail.cur.mode==="read" && trail.cur.nodeId===target.id);
+      if(target.cited === false) target.cited = true;
+      const jump = {nodeId:target.id, prev, why:String(ah.why||""), label:target.article.headline||target.article.title, moved, created:false, reused:true};
+      if(moved){ app.citedOpen = false; trail.cur = {nodeId:target.id, mode:"read"}; }
+      save(); if(moved) { render(); scrollTop(); }
+      await answerFrom(trail, target, text, jump, true);
+      return;
+    }
+
+    // New work needed: offer the choice instead of picking for them
+    const papers = (findArray(raw) || (raw && raw.title ? [raw] : []))
+      .filter(x => x && x.title && !known.has(norm(x.title)))
+      .slice(0,3)
+      .map(x => ({
+        title:String(x.title), authors:String(x.authors||""), year:x.year||"", venue:String(x.venue||""),
+        preprint:!!x.preprint, headline:String(x.headline||x.title), kind:String(x.kind||""),
+        angle:String(x.angle||""), tags:Array.isArray(x.tags)?x.tags:[],
+        venueType:String(x.venueType||"").toLowerCase(), why:String(x.why||"")
+      }));
+    if(!papers.length){
+      trail.chat.push({role:"assistant", content:"I couldn't find a paper I'm confident answers that, and I won't invent one. Try narrowing it to something a study could measure, or ask about the paper you're reading. If you were asking about how I work, ask me straight — I can answer that myself.", noSource:true});
+      busy.chat = null; save(); render(); return;
+    }
+    const intro = raw && typeof raw.intro === "string" ? raw.intro.trim() : "";
+    trail.chat.push({
+      role:"assistant",
+      content: intro || (papers.length===1
+        ? "One paper looks like it answers that."
+        : `${papers.length} papers speak to that, each from a different angle.`),
+      optLead: papers.length===1 ? "The paper this comes from — open it and I'll go deeper:"
+        : "Open whichever you want the full story from, and I'll read it and answer from it:",
+      options: papers, question: text, chosen: null, view: 0
+    });
+    busy.chat = null; save(); render(); focusChat();
+  }catch(e){
+    busy.chat = {error: errCopy(e)}; render();
+  }
+}
+
+/* The reader picked one of Scout's options: open it, then answer from it */
+async function chooseSource(trail, mi, j){
+  const m = trail.chat[mi];
+  if(!m || !m.options || m.chosen !== null || (busy.chat && busy.chat.loading)) return;
+  const pick = m.options[j]; if(!pick) return;
+  m.chosen = j;
+  // the ones they passed over shouldn't come back around
+  m.options.forEach((o,k)=>{ if(k!==j) trail.seen.push(o.title); });
+
+  const here = trail.nodes[trail.cur.nodeId] || trail.nodes[trail.rootId];
+  const dup = Object.values(trail.nodes).find(n=>n.kind==="article" && n.article.title.toLowerCase()===pick.title.toLowerCase());
+  const prev = Object.assign({}, trail.cur);
+  let target = dup;
+  if(!target){
+    target = {id:uid(), parentId:here.id, kind:"article", origin:"chat", question:m.question, created:Date.now(),
+      article:{title:pick.title, authors:pick.authors, year:pick.year, venue:pick.venue, preprint:pick.preprint,
+        headline:pick.headline, kind:pick.kind, angle:pick.angle, tags:pick.tags, venueType:pick.venueType},
+      detail:null, candidates:null, returnTo:prev};
+    trail.nodes[target.id] = target;
+    bumpTags(trail, pick.tags, 1);
+  }
+  const label = target.article.headline || target.article.title;
+  const jump = {nodeId:target.id, prev, why:pick.why||"", label, moved:true, created:!dup, reused:!!dup};
+  app.citedOpen = false;
+  trail.cur = {nodeId:target.id, mode:"read"};
+  m.pickedLabel = label;
+  document.body.classList.remove("chat-open");
+  save(); render(); scrollTop();
+  await answerFrom(trail, target, m.question, jump, !!dup);
+}
+
+/* Load the paper if needed, then write the answer from it */
+async function answerFrom(trail, target, text, jump, reused){
+  const label = jump.label;
+  busy.chat = {loading:true, status: target.detail ? `Reading “${label}” for your answer…` : `Opening “${label}”…`};
+  render(); focusChat();
+  try{
+    const d = target.detail || await loadDetail(trail, target);
+    if(!d){
+      trail.chat.push({role:"assistant", content:`I opened “${label}” but couldn't read it just now. Ask again in a moment.`, jump});
+      busy.chat = null; save(); render(); return;
+    }
+    if(target.cited === false) target.cited = true;
+    setChatStatus(`Reading “${label}” for your answer…`);
+    const recent = recentChat(trail, 0);
+    const a = target.article;
+    const rv = target.verified && target.verified.found ? target.verified : null;
+    const answerPrompt = `You are ${GUIDE}, a friendly trail guide helping someone understand research.
+${reused ? "The reader already has this paper open on their trail, so answer from it directly without sending them anywhere new." : ""}
+Answer about THIS PAPER, drawing on everything you know about it — its methods, experimental setup, results, figures and tables, the numbers it reports, its assumptions, what it compares against, what its authors concede, and how later work responded. The notes below are only a record of the short summary the reader has already read on screen: treat them as the floor, not the ceiling. Repeating the summary back to them is a failure, since they can read it themselves. Go past it and tell them what the paper itself says.
+Rules that keep this honest, because you are recalling the paper rather than reading a copy of it:
+- Never invent a number, sample size, date, author, or quotation. Only give a specific figure when you are genuinely confident it is from this paper.
+- Say how sure you are when it matters. "The paper reports X" for things you're confident of; "I believe they used about X, worth checking in the original" when you're less sure; "I don't recall that detail — the original would tell you" when you don't know. A plain "I don't know" is a good answer.
+- The verified record and real abstract above, when present, were fetched live and outrank your memory. Never contradict them.
+- Never contradict the notes below. If your recollection conflicts with them, say so plainly instead of picking one.
+- Stay on this paper. If the real answer lives in different work, say that and suggest they ask you to go find it.
+Mention the paper by its headline so the reader knows where the answer comes from, and point them to the original when they'd want to verify a specific figure.
+Write so a middle schooler (age 11-13) can follow: short sentences, everyday words, and any technical term explained the moment you use it. No jargon left bare, no talking down. Plain text, no headings or bullet symbols, under 180 words.
+
+THE PAPER: "${a.title}" (${a.authors}, ${a.year}, ${a.venue})
+${rv ? `Verified record from a live database lookup: ${rv.venue} (${rv.peerLabel}), ${rv.year}, cited by ${rv.citedBy} works${rv.doi?", DOI "+rv.doi:""}.${rv.retracted?" THIS PAPER IS RETRACTED — tell the reader if it bears on their question.":""}
+${rv.abstract ? "The paper's REAL abstract:\n" + rv.abstract.slice(0,2500) : ""}` : ""}
+Headline shown to the reader: ${a.headline||""}
+--- Below is what the reader has ALREADY read on screen. Don't just repeat it. ---
+Summary they've seen: ${(Array.isArray(d.summary)?d.summary:[d.summary]).join(" ").replace(/\[\[|\]\]/g,"")}
+Key finding: ${d.keyFinding||""}
+Key terms: ${(d.terms||[]).map(t=>`${t.term} = ${t.meaning}`).join("; ")}
+How the terms connect: ${(d.connections||[]).map(c=>`${c.from} and ${c.to}: ${c.how}`).join("; ")}
+Limitations they've seen: ${(d.limitations||[]).map(L=>`${L.name}: ${L.detail}`).join("; ") || "(none listed)"}
+--- End of what's already on screen. ---
+${recent ? "\nRecent conversation:\n" + recent : ""}
+Reader's question: "${text}"`;
+
+    const s2 = await ai();
+    busy.chat = {loading:true, streaming:"", status:""}; render(); focusChat();
+    const res = await s2(answerPrompt, {cache:false, onText: t => {
+      if(busy.chat) busy.chat.streaming = t;
+      const el = document.getElementById("scout-stream");
+      if(el){ el.textContent = t; focusChat(); }
+    }});
+    trail.chat.push({role:"assistant", content: res.text.trim() || "I read the paper but couldn't put an answer together. Try asking again.", jump});
+    busy.chat = null; save(); render();
+  }catch(e){
+    busy.chat = {error: errCopy(e)}; render();
+  }
+}
+function undoJump(trail, i){
+  app.citedOpen = false;
+  const m = trail.chat[i]; if(!m || !m.jump) return;
+  if(trail.nodes[m.jump.prev.nodeId]) trail.cur = Object.assign({}, m.jump.prev);
+  if(m.jump.created && trail.nodes[m.jump.nodeId]) trail.nodes[m.jump.nodeId].cited = false;
+  m.jump.undone = true; save(); render();
+}
+function focusChat(){ const log = $(".chat-log"); if(log) log.scrollTop = log.scrollHeight; }
+
+
+/* ---------- Inline vocabulary ---------- */
+let termMap = {};
+const termKey = t => String(t||"").toLowerCase().replace(/[\u2018\u2019]/g,"'").replace(/\s+/g," ").trim();
+const reEsc = t => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+function buildTermMap(detail, article){
+  const m = {};
+  Object.values(store.terms).forEach(t=>{ if(t && t.term && t.from !== article.title) m[termKey(t.term)] = {term:t.term, meaning:t.meaning, analogy:t.analogy||"", earlier:true}; });
+  (detail.terms||[]).forEach(t=>{ if(t && t.term) m[termKey(t.term)] = {term:t.term, meaning:t.meaning||"", analogy:t.analogy||"", earlier:false}; });
+  return m;
+}
+function lookupTerm(word, map){
+  const k = termKey(word);
+  if(map[k]) return k;
+  const trims = [k.replace(/es$/,""), k.replace(/s$/,""), k+"s"];
+  for(const t of trims) if(map[t]) return t;
+  const keys = Object.keys(map).sort((a,b)=>b.length-a.length);
+  return keys.find(x => x.length>3 && (k.includes(x) || x.includes(k))) || null;
+}
+function termSpan(text, key, map){
+  const t = map[key];
+  return `<span class="term${t.earlier?" known":""}" role="button" tabindex="0" data-term="${esc(key)}" aria-label="${esc(text)}: show meaning">${esc(text)}</span>`;
+}
+function autoMark(seg, map, used, newOnly){
+  const keys = Object.keys(map).filter(k => !used.has(k) && k.length>=3 && (!newOnly || !map[k].earlier)).sort((a,b)=>b.length-a.length);
+  if(!keys.length) return esc(seg);
+  const re = new RegExp("(?<![A-Za-z0-9])(" + keys.map(reEsc).join("|") + ")(?:e?s)?(?![A-Za-z0-9])", "gi");
+  let out = "", last = 0;
+  seg.replace(re, (m, g, off) => {
+    const k = termKey(g); if(used.has(k) || !map[k]) return m;
+    used.add(k); out += esc(seg.slice(last, off)) + termSpan(m, k, map); last = off + m.length; return m;
+  });
+  return out + esc(seg.slice(last));
+}
+function markup(text, map, used, newOnly){
+  const parts = String(text||"").split(/\[\[([^\]]+?)\]\]/);
+  const marked = parts.map((p,i)=> i%2 ? lookupTerm(p, map) : null);
+  marked.forEach(k=>{ if(k) used.add(k); });
+  return parts.map((p,i)=>{
+    if(i%2){ const k = marked[i]; return k ? termSpan(p, k, map) : esc(p); }
+    return autoMark(p, map, used, newOnly);
+  }).join("");
+}
+
+/* Popover */
+const pop = document.createElement("div");
+pop.id = "termpop"; pop.setAttribute("role","dialog"); pop.hidden = true;
+document.body.appendChild(pop);
+let popFor = null, popPinned = false;
+const canHover = window.matchMedia && matchMedia("(hover: hover)").matches;
+function showPop(el, pin){
+  const t = termMap[el.dataset.term]; if(!t) return;
+  popFor = el; popPinned = !!pin;
+  pop.innerHTML = `<div class="pop-term">${esc(t.term)}</div><div class="pop-mean">${esc(t.meaning)}</div>${t.analogy?`<div class="pop-ana">${esc(t.analogy)}</div>`:""}${t.earlier?`<div class="pop-note">You learned this in an earlier article.</div>`:""}`;
+  pop.hidden = false;
+  document.querySelectorAll(".term.active").forEach(x=>x.classList.remove("active"));
+  el.classList.add("active");
+  const r = el.getBoundingClientRect(), w = Math.min(320, window.innerWidth - 24);
+  pop.style.width = w + "px";
+  let left = Math.max(12, Math.min(r.left + r.width/2 - w/2, window.innerWidth - w - 12));
+  pop.style.left = left + "px";
+  const h = pop.offsetHeight;
+  const below = r.bottom + 10;
+  pop.style.top = (below + h > window.innerHeight - 8 && r.top - h - 10 > 8 ? r.top - h - 10 : below) + "px";
+}
+function hidePop(){ pop.hidden = true; popFor = null; popPinned = false; document.querySelectorAll(".term.active").forEach(x=>x.classList.remove("active")); }
+document.addEventListener("pointerover", e=>{ if(!canHover || e.pointerType==="touch") return; const el = e.target.closest(".term"); if(el && !popPinned) showPop(el, false); });
+document.addEventListener("pointerout", e=>{ if(!canHover || e.pointerType==="touch") return; const el = e.target.closest(".term"); if(el && el===popFor && !popPinned && !(e.relatedTarget && pop.contains(e.relatedTarget))) hidePop(); });
+pop.addEventListener("pointerleave", ()=>{ if(!popPinned) hidePop(); });
+document.addEventListener("click", e=>{
+  const el = e.target.closest(".term");
+  if(el){ if(popFor===el && popPinned) hidePop(); else showPop(el, true); return; }
+  if(!pop.hidden && !pop.contains(e.target)) hidePop();
+}, true);
+document.addEventListener("keydown", e=>{
+  const el = e.target.closest && e.target.closest(".term");
+  if(el && (e.key==="Enter" || e.key===" ")){ e.preventDefault(); if(popFor===el && popPinned) hidePop(); else showPop(el, true); }
+  if(e.key==="Escape" && app.lim && pop.hidden){ app.lim = null; render(); return; }
+  if(e.key==="Escape" && !pop.hidden){ const f = popFor; hidePop(); if(f) f.focus(); }
+});
+document.addEventListener("focusin", e=>{ const el = e.target.closest && e.target.closest(".term"); if(el && e.target.matches(":focus-visible")) showPop(el, false); });
+window.addEventListener("scroll", ()=>{ if(!pop.hidden) hidePop(); }, true);
+window.addEventListener("resize", ()=>{ if(!pop.hidden) hidePop(); });
+
+
+/* ---------- Works cited ---------- */
+const STYLES = {apa:{label:"APA 7", heading:"References"}, mla:{label:"MLA 9", heading:"Works Cited"}, chicago:{label:"Chicago", heading:"Bibliography"}};
+const citeStyle = () => STYLES[store.citeStyle] ? store.citeStyle : "apa";
+const Tx = t => ({t:String(t)}), It = t => ({t:String(t), i:true});
+const endP = str => { str = String(str||"").trim(); return /[.?!]$/.test(str) ? str : str + "."; };
+const dash = pg => String(pg||"").replace(/\s*[-\u2010-\u2013]\s*/g, "\u2013");
+function citeData(node){
+  const a = node.article || {}, c = (node.detail && node.detail.citation) || {};
+  const authors = Array.isArray(c.authors) ? c.authors.filter(x=>x && (x.family||x.given)).map(x=>({family:String(x.family||"").trim(), given:String(x.given||"").trim()})) : [];
+  return { type: String(c.type || (a.preprint ? "preprint" : "journal")).toLowerCase(), authors, raw: String(a.authors||"").trim(),
+    year: String(c.year || a.year || "n.d."), title: String(c.title || a.title || "").trim(), container: String(c.container || a.venue || "").trim(),
+    volume: String(c.volume||"").trim(), issue: String(c.issue||"").trim(), pages: dash(c.pages), publisher: String(c.publisher||"").trim(),
+    doi: String(c.doi||"").trim().replace(/^https?:\/\/(dx\.)?doi\.org\//i,"").replace(/^doi:\s*/i,""), url: String(c.url||"").trim() };
+}
+const link = c => c.doi ? "https://doi.org/" + c.doi : c.url;
+const initials = g => String(g||"").split(/\s+/).filter(Boolean).map(p => p.split("-").map(x => x ? x[0].toUpperCase() + "." : "").join("-")).join(" ");
+function authorsAPA(c){
+  if(!c.authors.length) return endP(c.raw || c.container);
+  const n = c.authors.map(x => x.given ? `${x.family}, ${initials(x.given)}` : x.family);
+  if(n.length===1) return endP(n[0]);
+  if(n.length<=20) return endP(n.slice(0,-1).join(", ") + ", & " + n[n.length-1]);
+  return endP(n.slice(0,19).join(", ") + ", . . . " + n[n.length-1]);
+}
+function authorsMLA(c){
+  if(!c.authors.length) return c.raw ? endP(c.raw) : "";
+  const f = x => x.given ? `${x.family}, ${x.given}` : x.family, g = x => x.given ? `${x.given} ${x.family}` : x.family;
+  if(c.authors.length===1) return endP(f(c.authors[0]));
+  if(c.authors.length===2) return endP(`${f(c.authors[0])}, and ${g(c.authors[1])}`);
+  return `${f(c.authors[0])}, et al.`;
+}
+function authorsChicago(c){
+  if(!c.authors.length) return c.raw ? endP(c.raw) : "";
+  const f = x => x.given ? `${x.family}, ${x.given}` : x.family, g = x => x.given ? `${x.given} ${x.family}` : x.family;
+  const list = c.authors.length > 10 ? c.authors.slice(0,7) : c.authors;
+  const names = list.map((x,i)=> i===0 ? f(x) : g(x));
+  let out = names.length===1 ? names[0] : names.length===2 ? `${names[0]}, and ${names[1]}` : names.slice(0,-1).join(", ") + ", and " + names[names.length-1];
+  if(c.authors.length > 10) out = names.join(", ") + ", et al";
+  return endP(out);
+}
+function formatCite(node, style){
+  const c = citeData(node), L = link(c), segs = [];
+  const conf = c.type==="conference", pre = c.type==="preprint", book = c.type==="book";
+  if(style==="apa"){
+    segs.push(Tx(authorsAPA(c) + " (" + c.year + "). "));
+    if(book){ segs.push(It(endP(c.title))); if(c.publisher) segs.push(Tx(" " + endP(c.publisher))); }
+    else {
+      segs.push(Tx(c.title.replace(/[.]$/,"") + (pre ? " [Preprint]. " : /[?!]$/.test(c.title) ? " " : ". ")));
+      if(conf){ segs.push(Tx("In ")); segs.push(It(c.container)); segs.push(Tx(c.pages ? ` (pp. ${c.pages}). ` : ". ")); if(c.publisher) segs.push(Tx(endP(c.publisher) + " ")); }
+      else if(c.container){
+        segs.push(It(c.container));
+        if(c.volume){ segs.push(Tx(", ")); segs.push(It(c.volume)); if(c.issue) segs.push(Tx(`(${c.issue})`)); }
+        segs.push(Tx(c.pages ? `, ${c.pages}. ` : ". "));
+      }
+    }
+    if(L) segs.push(Tx(" " + L));
+  } else if(style==="mla"){
+    const au = authorsMLA(c); if(au) segs.push(Tx(au + " "));
+    if(book){ segs.push(It(endP(c.title))); segs.push(Tx(" " + [c.publisher, c.year].filter(Boolean).join(", ") + ".")); }
+    else {
+      segs.push(Tx("\u201C" + endP(c.title) + "\u201D "));
+      if(c.container){ segs.push(It(c.container)); }
+      const bits = [];
+      if(c.volume) bits.push("vol. " + c.volume);
+      if(c.issue) bits.push("no. " + c.issue);
+      bits.push(c.year);
+      if(c.pages) bits.push((/^\d+\u2013\d+$/.test(c.pages) ? "pp. " : "p. ") + c.pages);
+      segs.push(Tx((c.container ? ", " : "") + bits.join(", ") + "."));
+    }
+    if(L) segs.push(Tx(" " + L.replace(/^https?:\/\//, c.doi ? "https://" : "") + "."));
+  } else {
+    const au = authorsChicago(c); if(au) segs.push(Tx(au + " "));
+    if(book){ segs.push(It(endP(c.title))); segs.push(Tx(" " + [c.publisher, c.year].filter(Boolean).join(", ") + ".")); }
+    else {
+      segs.push(Tx("\u201C" + endP(c.title) + "\u201D "));
+      if(conf){ segs.push(Tx("In ")); segs.push(It(c.container)); segs.push(Tx((c.pages ? ", " + c.pages : "") + ". " + [c.publisher, c.year].filter(Boolean).join(", ") + ".")); }
+      else if(pre){ segs.push(Tx("Preprint, ")); segs.push(It(c.container || "preprint server")); segs.push(Tx(", " + c.year + ".")); }
+      else {
+        if(c.container) segs.push(It(c.container));
+        segs.push(Tx((c.volume ? " " + c.volume : "") + (c.issue ? ", no. " + c.issue : "") + " (" + c.year + ")" + (c.pages ? ": " + c.pages : "") + "."));
+      }
+    }
+    if(L) segs.push(Tx(" " + L + "."));
+  }
+  // tidy doubled punctuation and spaces across segment boundaries
+  const out = segs.filter(x=>x.t);
+  for(let i=0;i<out.length;i++){ out[i].t = out[i].t.replace(/\.\./g,".").replace(/\s{2,}/g," "); if(i>0 && /\s$/.test(out[i-1].t) && /^\s/.test(out[i].t)) out[i].t = out[i].t.replace(/^\s+/,""); }
+  if(out.length) out[0].t = out[0].t.replace(/^\s+/,""), out[out.length-1].t = out[out.length-1].t.replace(/\s+$/,"");
+  return out;
+}
+function citedNodes(trail){
+  return Object.values(trail.nodes).filter(n => n.kind==="article" && n.detail && n.cited !== false);
+}
+function sortKey(n){ const c = citeData(n); return ((c.authors[0] && c.authors[0].family) || c.raw || c.title).toLowerCase() + " " + c.year; }
+const sortedCited = trail => citedNodes(trail).sort((a,b)=> sortKey(a).localeCompare(sortKey(b)));
+const segHTML = segs => segs.map(x => x.i ? `<em>${esc(x.t)}</em>` : esc(x.t)).join("");
+const segText = segs => segs.map(x=>x.t).join("");
+function bibtex(n){
+  const c = citeData(n);
+  const fam = ((c.authors[0] && c.authors[0].family) || c.raw.split(/[ ,]/)[0] || "anon").toLowerCase().normalize("NFD").replace(/[^a-z]/g,"");
+  const word = (c.title.toLowerCase().match(/[a-z]{4,}/) || ["paper"])[0];
+  const type = {journal:"article", conference:"inproceedings", book:"book", chapter:"incollection", report:"techreport"}[c.type] || "misc";
+  const brace = v => String(v).replace(/[{}]/g,"");
+  const f = [["author", c.authors.length ? c.authors.map(x=> x.given ? `${x.family}, ${x.given}` : x.family).join(" and ") : c.raw], ["title", `{${brace(c.title)}}`], ["year", c.year]];
+  if(type==="article") f.push(["journal", c.container]);
+  else if(type==="inproceedings" || type==="incollection") f.push(["booktitle", c.container]);
+  else if(c.container) f.push(["howpublished", c.container]);
+  f.push(["volume", c.volume], ["number", c.issue], ["pages", c.pages.replace(/\u2013/g,"--")], ["publisher", c.publisher], ["doi", c.doi], ["url", c.doi ? "" : c.url]);
+  return `@${type}{${fam}${c.year.replace(/\D/g,"")}${word},\n` + f.filter(x=>x[1]).map(x=>`  ${x[0]} = {${x[1]}}`).join(",\n") + "\n}";
+}
+
+/* Minimal .docx (stored zip, no compression) */
+const CRC = (()=>{ const t = new Uint32Array(256); for(let n=0;n<256;n++){ let c=n; for(let k=0;k<8;k++) c = c&1 ? 0xEDB88320 ^ (c>>>1) : c>>>1; t[n]=c>>>0; } return t; })();
+const crc32 = b => { let c = 0xFFFFFFFF; for(let i=0;i<b.length;i++) c = CRC[(c ^ b[i]) & 0xFF] ^ (c>>>8); return (c ^ 0xFFFFFFFF)>>>0; };
+function zipStore(files){
+  const enc = new TextEncoder(), parts = [], central = []; let offset = 0;
+  for(const [name, text] of files){
+    const nb = enc.encode(name), data = enc.encode(text), crc = crc32(data);
+    const h = new DataView(new ArrayBuffer(30));
+    h.setUint32(0,0x04034b50,true); h.setUint16(4,20,true); h.setUint16(6,0x0800,true); h.setUint16(8,0,true);
+    h.setUint16(10,0,true); h.setUint16(12,0x21,true); h.setUint32(14,crc,true); h.setUint32(18,data.length,true); h.setUint32(22,data.length,true);
+    h.setUint16(26,nb.length,true); h.setUint16(28,0,true);
+    parts.push(new Uint8Array(h.buffer), nb, data);
+    const c = new DataView(new ArrayBuffer(46));
+    c.setUint32(0,0x02014b50,true); c.setUint16(4,20,true); c.setUint16(6,20,true); c.setUint16(8,0x0800,true); c.setUint16(10,0,true);
+    c.setUint16(12,0,true); c.setUint16(14,0x21,true); c.setUint32(16,crc,true); c.setUint32(20,data.length,true); c.setUint32(24,data.length,true);
+    c.setUint16(28,nb.length,true); c.setUint32(42,offset,true);
+    central.push(new Uint8Array(c.buffer), nb);
+    offset += 30 + nb.length + data.length;
+  }
+  const cdSize = central.reduce((s,x)=>s+x.length,0);
+  const e = new DataView(new ArrayBuffer(22));
+  e.setUint32(0,0x06054b50,true); e.setUint16(8,files.length,true); e.setUint16(10,files.length,true); e.setUint32(12,cdSize,true); e.setUint32(16,offset,true);
+  const all = [...parts, ...central, new Uint8Array(e.buffer)], out = new Uint8Array(offset + cdSize + 22); let p = 0;
+  for(const a of all){ out.set(a,p); p += a.length; }
+  return out;
+}
+function buildDocx(heading, entries){
+  const x = t => String(t).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  const font = '<w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>';
+  const run = (t, it, b) => `<w:r><w:rPr>${font}${b?"<w:b/>":""}${it?"<w:i/>":""}<w:sz w:val="24"/></w:rPr><w:t xml:space="preserve">${x(t)}</w:t></w:r>`;
+  const spacing = '<w:spacing w:before="0" w:after="0" w:line="480" w:lineRule="auto"/>';
+  const body = `<w:p><w:pPr><w:jc w:val="center"/>${spacing}</w:pPr>${run(heading,false,true)}</w:p>`
+    + entries.map(segs => `<w:p><w:pPr>${spacing}<w:ind w:left="720" w:hanging="720"/></w:pPr>${segs.map(s=>run(s.t,s.i)).join("")}</w:p>`).join("");
+  const doc = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${body}<w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="720" w:footer="720" w:gutter="0"/></w:sectPr></w:body></w:document>`;
+  return zipStore([
+    ["[Content_Types].xml", '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>'],
+    ["_rels/.rels", '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'],
+    ["word/document.xml", doc]
+  ]);
+}
+
+function browserDownloads(){
+  return { save: async ({filename, data}) => {
+    const blob = data instanceof Blob ? data
+      : new Blob([data], {type: /\.docx$/i.test(filename) ? "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        : /\.json$/i.test(filename) ? "application/json" : "text/plain;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = filename; document.body.appendChild(a); a.click();
+    setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 2000);
+    return {status:"saved"};
+  }};
+}
+const dlPromise = (window.claude && typeof window.claude.use === "function")
+  ? window.claude.use("downloads").catch(()=>null).then(d => d || browserDownloads())
+  : Promise.resolve(browserDownloads());
+let dlState = "pending";
+dlPromise.then(d => { dlState = d ? "ok" : "off"; if(app.citedOpen) render(); });
+const slug = t => String(t).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,40) || "research";
+async function downloadCited(trail, fmt){
+  const style = citeStyle(), list = sortedCited(trail);
+  if(!list.length) return;
+  const base = `works-cited-${slug(trail.topic)}`;
+  let filename, data;
+  if(fmt==="docx"){ filename = base + ".docx"; data = buildDocx(STYLES[style].heading, list.map(n=>formatCite(n, style))); }
+  else if(fmt==="txt"){ filename = base + ".txt"; data = STYLES[style].heading + "\n\n" + list.map(n=>segText(formatCite(n, style))).join("\n\n") + "\n"; }
+  else { filename = base + "-bibtex.txt"; data = list.map(bibtex).join("\n\n") + "\n"; }
+  busy.dl = {msg:"Waiting for you to confirm the download…"}; render();
+  try{
+    const d = await dlPromise; if(!d) throw {code:"unavailable"};
+    await d.save({filename, data});
+    busy.dl = {msg:"Downloaded " + filename + "."};
+  }catch(e){
+    busy.dl = {msg: e && e.code==="declined" ? "Download canceled." : e && e.code==="rate_limited" ? "A download prompt is already open. Finish that one first." : "Downloads aren't available here. Use Copy all instead.", err: !(e && e.code==="declined")};
+  }
+  render();
+}
+async function copyCited(trail){
+  const style = citeStyle();
+  const text = STYLES[style].heading + "\n\n" + sortedCited(trail).map(n=>segText(formatCite(n, style))).join("\n\n");
+  try{ await navigator.clipboard.writeText(text); busy.dl = {msg:"Copied your works cited."}; }
+  catch(e){ busy.dl = {msg:"Couldn't reach the clipboard. Select the list below and copy it.", err:true}; }
+  render();
+}
+
+
+/* ---------- Limitations ---------- */
+function allLimits(trail){
+  const out = [];
+  Object.values(trail.nodes).filter(n=>n.kind==="article" && n.detail && (n.detail.limitations||[]).length)
+    .sort((a,b)=>a.created-b.created)
+    .forEach(n => n.detail.limitations.forEach((L,i)=> out.push({node:n, i, L})));
+  return out;
+}
+function limKey(nodeId, i){ return nodeId + "#" + i; }
+async function loadFixes(trail, nodeId, i){
+  const node = trail.nodes[nodeId]; if(!node) return;
+  const L = (node.detail.limitations||[])[i]; if(!L) return;
+  const k = limKey(nodeId, i);
+  if(!trail.fixes) trail.fixes = {};
+  if(busy[k] && busy[k].loading) return;
+  busy[k] = {loading:true}; render();
+  const f = fieldById(trail.field);
+  const a = node.article;
+  const seen = Object.values(trail.nodes).filter(n=>n.kind==="article").map(n=>n.article.title);
+  const prompt = `You are a research librarian in ${f.name}.
+A reader is studying "${a.title}" (${a.authors}, ${a.year}, ${a.venue}) and wants to know what has been done about one of its limitations.
+The limitation: "${L.name}" — ${L.detail}
+${trail.lens ? `The reader is focused on this application: "${trail.lens}".` : ""}
+
+Find 3 real papers that ATTACK this specific limitation: later work that fixes, reduces, works around, or measures it, or a competing approach that avoids it. Prefer work published after ${a.year||"this paper"}, but a good earlier paper that already solves it is fine.
+Every paper must be real, one you are highly confident exists with exact title, authors, year, and venue, from a reputable peer-reviewed venue or a well-known preprint server, never from a publisher on Beall's list. Do not repeat these titles the reader already has: ${seen.length ? seen.map(t=>`"${t}"`).join("; ") : "(none)"}. If you are confident about fewer than 3, return only the ones you are sure of; return an empty list rather than invent one.
+
+Reply with only a JSON object:
+{"papers": [{"title":string,"authors":string,"year":number,"venue":string,"preprint":boolean,"headline":string (plain language, max 14 words),"kind":"Big picture"|"How it works"|"How it's built"|"Testing it"|"Wild card","angle":string (2-4 words),"tags":[3 lowercase tags],"approach":string (one short sentence: how this paper takes on the limitation),"status":string (max 6 words, e.g. "mostly solved in simulation", "partial fix, costly", "still open")}],
+ "state": string (1-2 sentences: where the field stands on this limitation overall)}`;
+  try{
+    const raw = await askJSON(prompt, {cache:false});
+    const papers = (findArray(raw) || []).filter(x=>x && x.title).slice(0,3).map(x=>({
+      title:String(x.title), authors:String(x.authors||""), year:x.year||"", venue:String(x.venue||""), preprint:!!x.preprint,
+      headline:String(x.headline||x.title), kind:String(x.kind||""), angle:String(x.angle||""), tags:Array.isArray(x.tags)?x.tags:[],
+      approach:String(x.approach||""), status:String(x.status||"")}));
+    trail.fixes[k] = {papers, state: String((raw && raw.state) || ""), when: Date.now()};
+    save(); busy[k] = null;
+  }catch(e){ busy[k] = {error: errCopy(e)}; }
+  render();
+}
+function openFix(trail, nodeId, i, idx){
+  const parent = trail.nodes[nodeId]; if(!parent) return;
+  const k = limKey(nodeId, i), got = trail.fixes && trail.fixes[k];
+  const paper = got && got.papers[idx]; if(!paper) return;
+  const L = parent.detail.limitations[i];
+  const dup = Object.values(trail.nodes).find(n=>n.kind==="article" && n.article.title.toLowerCase()===paper.title.toLowerCase());
+  const prev = Object.assign({}, trail.cur);
+  let target = dup;
+  if(!target){
+    target = {id:uid(), parentId:parent.id, kind:"article", origin:"limitation", question:`What's being done about: ${L.name}`,
+      created:Date.now(), article:paper, detail:null, candidates:null, returnTo:prev};
+    trail.nodes[target.id] = target;
+    bumpTags(trail, paper.tags, 0.5);
+  }
+  app.lim = null; app.citedOpen = false;
+  trail.cur = {nodeId:target.id, mode:"read"};
+  save(); render(); scrollTop();
+  if(!target.detail) loadDetail(trail, target);
+}
+function renderLimModal(trail){
+  if(!app.lim) return "";
+  const node = trail.nodes[app.lim.nodeId]; if(!node || !node.detail) return "";
+  const L = (node.detail.limitations||[])[app.lim.i]; if(!L) return "";
+  const k = limKey(app.lim.nodeId, app.lim.i), b = busy[k], got = trail.fixes && trail.fixes[k];
+  let fixes = "";
+  if(b && b.loading) fixes = `<p class="status">Searching for work that takes this on…</p><div class="skel" style="height:70px"></div><div class="skel" style="height:70px"></div>`;
+  else if(b && b.error) fixes = `<p class="err">${esc(b.error)}</p><button class="btn" data-act="fixes">Try again</button>`;
+  else if(got){
+    fixes = (got.state ? `<p class="fix-state">${esc(got.state)}</p>` : "")
+      + (got.papers.length ? `<ul class="fixes">${got.papers.map((x,j)=>`<li><button class="fix" data-act="fixopen" data-j="${j}">
+          <span class="fix-top">${x.status?`<span class="chip">${esc(x.status)}</span>`:""}${x.year?`<span class="fix-year">${esc(x.year)}</span>`:""}</span>
+          <span class="fix-hl">${esc(x.headline)}</span>
+          ${x.approach?`<span class="fix-why">${esc(x.approach)}</span>`:""}</button></li>`).join("")}</ul>
+        <p class="fineprint">Opening one adds it to your trail and your works cited.</p>`
+        : `<p class="status">No follow-up work found that I'm confident about. This one may still be wide open.</p>`)
+      + `<div class="actions"><button class="btn" data-act="fixes">Look again</button></div>`;
+  } else {
+    fixes = `<div class="actions"><button class="btn primary" data-act="fixes">See what's being done</button></div>`;
+  }
+  return `<div class="modal-back" data-act="limclose"></div>
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Limitation">
+    <button class="modal-x" data-act="limclose" aria-label="Close">×</button>
+    <div class="modal-k">Limitation</div>
+    <h2 class="modal-h">${esc(L.name)}</h2>
+    ${L.detail?`<p class="modal-d">${esc(L.detail)}</p>`:""}
+    <p class="modal-src">From “${esc(node.article.headline||node.article.title)}” (${esc(node.article.year||"")})</p>
+    <div class="actions"><button class="btn primary" data-act="claimlim">I want to work on this</button></div>
+    ${fixes}
+  </div>`;
+}
+
+
+/* ---------- Backup and restore ---------- */
+function backupData(){
+  return JSON.stringify({app:"trailhead", version:1, saved:new Date().toISOString(), store}, null, 2);
+}
+async function saveBackup(){
+  const name = `trailhead-backup-${new Date().toISOString().slice(0,10)}.json`;
+  busy.backup = {msg:"Waiting for you to confirm the download…"}; render();
+  try{
+    const d = await dlPromise; if(!d) throw {code:"unavailable"};
+    await d.save({filename:name, data:backupData()});
+    busy.backup = {msg:`Saved ${name}. Keep it somewhere safe — you can restore from it any time.`};
+  }catch(e){
+    if(e && e.code==="declined") busy.backup = {msg:"Backup canceled."};
+    else {
+      try{ await navigator.clipboard.writeText(backupData()); busy.backup = {msg:"Downloads aren't available here, so your backup was copied to the clipboard. Paste it into a text file and keep it."}; }
+      catch(e2){ busy.backup = {msg:"Couldn't save a backup here. Your trails are still stored in this browser.", err:true}; }
+    }
+  }
+  render();
+}
+function restoreBackup(file){
+  const r = new FileReader();
+  r.onload = () => {
+    try{
+      const parsed = JSON.parse(r.result);
+      const incoming = (parsed && parsed.store) || parsed;
+      if(!incoming || !Array.isArray(incoming.trails)) throw new Error("shape");
+      const have = new Set(store.trails.map(t=>t.id));
+      const added = incoming.trails.filter(t => t && t.id && !have.has(t.id));
+      store.trails = added.concat(store.trails).slice(0,30);
+      store.terms = Object.assign({}, incoming.terms||{}, store.terms);
+      if(incoming.citeStyle && !store.citeStyle) store.citeStyle = incoming.citeStyle;
+      save();
+      busy.backup = {msg: added.length ? `Restored ${added.length} trail${added.length===1?"":"s"}.` : "That backup held nothing new — your trails were already here."};
+    }catch(e){ busy.backup = {msg:"That file isn't a Trailhead backup.", err:true}; }
+    render();
+  };
+  r.onerror = () => { busy.backup = {msg:"Couldn't read that file.", err:true}; render(); };
+  r.readAsText(file);
+}
+
+
+/* ---------- Keeping prompts under the size cap ---------- */
+const MAX_PROMPT = 56000;                       // headroom under the platform's 64 KiB
+const byteLen = t => { try { return new TextEncoder().encode(String(t)).length; } catch(e){ return String(t).length; } };
+/* make(level) returns the prompt with less context at each higher level */
+async function askFitted(make, opts, levels){
+  const top = (levels || 4) - 1;
+  let last = null;
+  for(let lvl = 0; lvl <= top; lvl++){
+    const prompt = make(lvl);
+    if(lvl < top && byteLen(prompt) > MAX_PROMPT) continue;   // too big: shrink before sending
+    try { return await askJSON(prompt, opts); }
+    catch(e){
+      last = e;
+      // the platform disagreed about the size, or the reply got cut: try with less
+      if(lvl < top && e && (e.code === "prompt_too_large" || e.code === "invalid_json" || e.code === "truncated")) continue;
+      throw e;
+    }
+  }
+  throw last || {code:"prompt_too_large"};
+}
+
+/* ---------- Idea board ---------- */
+const SLOTS = [
+  ["question", "The question"],
+  ["measure",  "What you'd measure"],
+  ["comparison", "Compared to what"],
+  ["falsify",  "What would show you're wrong"],
+  ["method",   "How you'd actually do it"]
+];
+const allIdeas = () => (store.ideas = store.ideas || []);
+const ideasForTrail = trail => allIdeas().filter(x => x.trailId === (trail && trail.id));
+const ideaById = id => allIdeas().find(x=>x.id===id);
+const trailOfIdea = idea => idea && store.trails.find(t=>t.id===idea.trailId);
+const curIdea = () => ideaById(app.ideaId);
+
+function startIdea(trail, nodeId, limIndex){
+  const node = trail.nodes[nodeId]; if(!node || !node.detail) return;
+  const L = (node.detail.limitations||[])[limIndex]; if(!L) return;
+  let idea = allIdeas().find(x => x.trailId===trail.id && x.srcNodeId===nodeId && x.srcIndex===limIndex);
+  if(!idea){
+    idea = {id:uid(), created:Date.now(), trailId:trail.id, trailTopic:trail.topic, field:trail.field,
+      srcNodeId:nodeId, srcIndex:limIndex, title:L.name, gap:L.detail||"", chat:[], slots:{}, linked:[], explore:null};
+    allIdeas().unshift(idea);
+  }
+  idea.trailTopic = trail.topic;
+  app.lim = null; app.citedOpen = false; app.backTo = app.view; app.view = "board"; app.ideaId = idea.id; app.ideaReturn = null;
+  save(); render(); window.scrollTo({top:0});
+}
+
+/* "Kirchenbauer 2023" — how a person would name a paper in passing */
+function shortCite(node){
+  const a = node.article || {}, c = (node.detail && node.detail.citation) || {};
+  let fam = (Array.isArray(c.authors) && c.authors[0] && c.authors[0].family) || "";
+  if(!fam && a.authors){
+    const raw = String(a.authors).split(/,| and | & /)[0].trim();
+    const bits = raw.split(/\s+/).filter(w=>!/^[A-Z]\.?$/.test(w));
+    fam = bits[bits.length-1] || raw;
+  }
+  fam = String(fam).replace(/\s*et al\.?$/i,"").trim();
+  const yr = a.year || c.year || "";
+  if(fam && yr) return `${fam} ${yr}`;
+  if(fam) return fam;
+  const t = a.headline || a.title || "that paper";
+  return t.length > 34 ? t.slice(0,32).trim() + "\u2026" : t;
+}
+/* Turn the [P3] keys Scout writes into clickable citations */
+function linkKeys(text, map){
+  const used = new Set();
+  const html = esc(String(text||"")).replace(/\s*\[(P\d+)\]/g, (m, k) => {
+    const n = map[k];
+    if(!n) return "";                               // unknown key: drop it rather than show the code
+    used.add(n.id);
+    return ` <button class="paperchip" data-act="ideajump" data-id="${n.id}" title="${esc(n.article.title||"")}">${esc(shortCite(n))}</button>`;
+  });
+  return {html, used};
+}
+
+/* Everything the reader has read, for the idea chat to draw connections from */
+function readPapers(trail){
+  return Object.values(trail.nodes)
+    .filter(n => n.kind==="article" && n.detail)
+    .sort((a,b)=>a.created-b.created)
+    .map((n,i)=>({ key:"P"+(i+1), node:n }));
+}
+/* What they said to Scout while reading — the other half of their thinking */
+function scoutBlock(trail, cap){
+  const chat = (trail && trail.chat) || [];
+  const limit = cap === undefined ? 6500 : cap;
+  if(!limit) return "(left out to keep this message short)";
+  if(!chat.length) return "(they haven't talked to Scout while reading)";
+  const lines = chat.map(m => {
+    if(m.role === "user") return "Them: " + m.content;
+    let who = "Scout";
+    if(m.jump && m.jump.label) who = `Scout (answering from "${m.jump.label}")`;
+    else if(m.meta) who = "Scout (about how the app works)";
+    let t = who + ": " + m.content;
+    if(m.options && m.options.length){
+      const picked = (m.chosen !== null && m.chosen >= 0) ? m.options[m.chosen] : null;
+      t += "\n  [offered: " + m.options.map(o=>`"${o.title}"`).join("; ") + (picked ? `; they opened "${picked.title}"` : "; they opened none") + "]";
+    }
+    return t;
+  });
+  let out = lines.join("\n");
+  if(out.length > limit) out = "…(earlier part trimmed)…\n" + out.slice(-limit);
+  return out;
+}
+function papersBlock(trail, cap){
+  let list = readPapers(trail);
+  if(!list.length) return "(they haven't finished reading anything yet)";
+  let note = "";
+  if(cap && list.length > cap){ note = `(showing the ${cap} most recent of ${list.length})\n`; list = list.slice(-cap); }
+  return note + list.map(({key,node}) => {
+    const a = node.article, d = node.detail;
+    return `[${key}] "${a.title}" (${a.authors||"?"}, ${a.year||"n.d."}) — ${d.keyFinding||""}`
+      + ((d.limitations||[]).length ? ` | can't yet: ${d.limitations.map(L=>L.name).join("; ")}` : "");
+  }).join("\n");
+}
+
+async function sendIdeaChat(idea, text){
+  const trail = trailOfIdea(idea); if(!trail) return;
+  text = String(text||"").trim(); if(!text) return;
+  if(busy.idea && busy.idea.loading) return;
+  idea.chat.push({role:"user", content:text});
+  busy.idea = {loading:true}; save(); render(); focusIdeaChat();
+  const f = fieldById(trail.field);
+  const src = trail.nodes[idea.srcNodeId];
+  const filled = SLOTS.filter(([k])=>idea.slots[k]).map(([k,label])=>`${label}: ${idea.slots[k]}`).join("\n") || "(nothing filled in yet)";
+  const empty = SLOTS.filter(([k])=>!idea.slots[k]).map(([k,label])=>label).join(", ") || "(all filled)";
+  const TIERS = [
+    {scout:6500, hist:16, papers:0,  text:20000},
+    {scout:2500, hist:10, papers:14, text:12000},
+    {scout:800,  hist:6,  papers:8,  text:8000},
+    {scout:0,    hist:4,  papers:5,  text:6000}
+  ];
+  const make = lvl => {
+  const T = TIERS[Math.min(lvl, TIERS.length-1)];
+  const hist = idea.chat.slice(-T.hist).map(m => (m.role==="user"?"Them: ":"Scout: ") + m.content).join("\n");
+  const said = text.length > T.text ? text.slice(0, T.text) + "\n…(their message was long and is cut off here)" : text;
+  return `You are ${GUIDE}, helping a curious student turn a gap they found in the research into an idea of their own. Field: ${f.name}. Their topic: "${trail.topic}".
+
+THE GAP THEY CLAIMED: "${idea.title}"${idea.gap ? " — " + idea.gap : ""}
+It came from: ${src ? `"${src.article.title}" (${src.article.authors||"?"}, ${src.article.year||"n.d."})` : "a paper on their trail"}
+
+EVERYTHING THEY HAVE READ (cite these by key when one bears on what they say):
+${papersBlock(trail, T.papers)}
+
+THEIR IDEA SO FAR:
+${filled}
+Still empty: ${empty}
+
+WHAT THEY ASKED SCOUT WHILE READING (a different conversation, on the articles themselves — they may refer back to it as "what we talked about" or "the idea I mentioned". Read it as their own earlier thinking, and when they point at it, pick the thread up without making them repeat themselves):
+${scoutBlock(trail, T.scout)}
+
+THIS CONVERSATION SO FAR:
+${hist || "(this is their first message)"}
+
+YOUR JOB, in priority order. The first one always wins.
+
+1. ANSWER THEM. If their message asks anything, or raises something that deserves a response, answer it properly and first. This is a real conversation, not a form. Dodging their question to ask one of your own is the single worst thing you can do here, and it is what makes people stop talking to you. If their message is long or has several parts, deal with the parts that matter before anything else. A message that explains something well and asks nothing is a good message.
+
+2. COLLECT QUIETLY. As they talk, you are filling in five things about their idea: the question, what they'd measure, compared to what, what would prove them wrong, and how they'd do it. Pick these up from whatever they happen to say — a good answer is often buried in a message about something else. Capture silently; don't announce it or read it back to them.
+
+3. NUDGE, SOMETIMES. When the conversation has room for it — they asked nothing, or you've answered them fully and the exchange has a natural pause — add one question that moves an empty slot forward. Roughly every second or third message, not every one. Never tack a question onto the end out of obligation; a reply that just answers well is fine. If they ignore a question you asked, let it go and pick it up later.
+
+Rules:
+- They may ask you to carry on from something they were working out with Scout while reading. When they do, go find it in that conversation above, say back in one line what you understand the idea to be so they can correct you, and continue from there. Do not ask them to explain it again.
+- NEVER invent their research idea for them. Explaining things, giving background, naming trade-offs and laying out options are all your job. Deciding what they want to study is not. If they're stuck, offer two or three directions and let them pick.
+- Connect it to what they've read. When something they said is already answered, complicated, or supported by one of the papers above, say so. Name the paper by writing its key in square brackets exactly where you mention it, like "the paper [P2] measured this on 40 people". The app turns that into the paper's name, which the reader can click, so never spell a key out any other way, never write "paper P2" or "[P2]" on its own as a label, and never use a key that is not in the list above.
+- When the idea needs evidence they don't have yet, say exactly what's missing and set "explore" to the topic they should go read about. Do not fill the hole with a guess.
+- YOU KNOW THE PUBLISHED LITERATURE. You were trained on an enormous amount of it, and recalling relevant work is one of the most useful things you do here. Use it freely. When real work bears on their idea — someone already tried it, someone tried the opposite, someone built the method they'd need, someone measured the thing they want to measure — name it and put it in "papers" so they can open it. Do not answer "I don't know" when you do in fact recall relevant work; that is the failure to avoid.
+- What you cannot do is run a live search, so you can never promise you haven't missed something. Mention that only when it actually matters — when they ask whether their idea is new. Then: name the closest work you know of and say how theirs differs, and add that you can't rule out something you haven't seen. Never use it as a disclaimer on ordinary answers.
+- Every paper you name must be real: one you are highly confident exists with its exact title, authors, year and venue, from a reputable peer-reviewed journal or conference or a well-known preprint server, never a publisher on Beall's list. If you are not confident a paper exists, leave it out. Never invent one to be helpful.
+- "papers" and "explore" do different jobs. Use "papers" when you can name specific work that bears on what they said. Use "explore" when the gap is broad and they should go read around a topic rather than one paper. Either, both, or neither — whatever the moment calls for.
+- Length follows the question, not a quota. A quick question gets a couple of sentences; a real one gets as much room as it needs, usually under 200 words. Never truncate a good answer to stay short.
+- Middle-school reading level: short sentences, everyday words, any technical term explained as you use it. Plain text, no headings or bullets.
+
+Their new message: "${said}"
+
+Reply with only a JSON object:
+{"reply": string,
+ "captures": [] | [{"slot":"question"|"measure"|"comparison"|"falsify"|"method","value":string}]
+   — everything their message answered, in THEIR words tightened to one line each. A long message can fill two or three at once. Empty array when they only asked a question or said something vague; never capture a guess of your own.,
+ "fromTrail": null | {"key":"P1","what":string (one sentence: what that paper already shows about this)}
+   — use this ONLY for a paper that genuinely settles, contradicts, or substantially answers what they just said, and only when it deserves to be pulled out as a callout. A paper you merely mention in passing needs nothing here; the inline [key] already covers it. Most replies should leave this null.,
+ "papers": [] | [{"title":string,"authors":string,"year":number,"venue":string,"preprint":boolean,"headline":string (plain language, max 14 words),"kind":"Big picture"|"How it works"|"How it's built"|"Testing it"|"Wild card","venueType":"journal"|"conference"|"preprint"|"book"|"thesis"|"report","angle":string (2-4 words),"tags":[3 lowercase tags],"why":string (one short sentence: what this paper brings to THEIR idea)}]
+   — up to 3 real papers, best first, none already in the list of what they've read. Empty when nothing specific comes to mind.,
+ "explore": null | {"topic":string (max 10 words, what to go read about),"why":string (one short sentence)},
+ "askedSomething": boolean (true if your reply ends with a question for them),
+ "stage": "shaping" | "sharpening" | "ready"}`;
+  };
+  try{
+    let r = await askFitted(make, {cache:false});
+    if(Array.isArray(r)) r = r[0];
+    const reply = (r && typeof r.reply==="string" && r.reply.trim()) || "Say a bit more and I'll help you sharpen it.";
+    const msg = {role:"assistant", content:reply};
+    const caps = Array.isArray(r && r.captures) ? r.captures : (r && r.capture ? [r.capture] : []);
+    const took = [];
+    caps.forEach(c => {
+      if(c && c.slot && c.value && SLOTS.some(([k])=>k===c.slot)){
+        idea.slots[c.slot] = String(c.value).trim();
+        took.push(c.slot);
+      }
+    });
+    if(took.length) msg.captured = took;
+    const complete = SLOTS.every(([k]) => idea.slots[k]);
+    const justFinished = complete && took.length && !idea.doc;
+    if(r && r.fromTrail && r.fromTrail.key){
+      const hit = readPapers(trail).find(x=>x.key===String(r.fromTrail.key).toUpperCase());
+      if(hit){
+        msg.link = {nodeId:hit.node.id, label:hit.node.article.headline||hit.node.article.title, what:String(r.fromTrail.what||"")};
+        if(!idea.linked.includes(hit.node.id)) idea.linked.push(hit.node.id);
+      }
+    }
+    const seen = new Set(Object.values(trail.nodes).filter(n=>n.kind==="article").map(n=>String(n.article.title).toLowerCase()));
+    const recs = (Array.isArray(r && r.papers) ? r.papers : []).filter(x=>x && x.title && !seen.has(String(x.title).toLowerCase())).slice(0,3)
+      .map(x=>({ title:String(x.title), authors:String(x.authors||""), year:x.year||"", venue:String(x.venue||""),
+        preprint:!!x.preprint, headline:String(x.headline||x.title), kind:String(x.kind||""), angle:String(x.angle||""),
+        tags:Array.isArray(x.tags)?x.tags:[], venueType:String(x.venueType||"").toLowerCase(), why:String(x.why||""),
+        peerGuess:(String(x.venueType||"").toLowerCase()==="preprint"||x.preprint)?"no":["journal","conference","book"].includes(String(x.venueType||"").toLowerCase())?"yes":"unclear" }));
+    if(recs.length) msg.papers = recs;
+    if(r && r.explore && r.explore.topic) msg.explore = {topic:String(r.explore.topic), why:String(r.explore.why||"")};
+    if(r && r.stage) idea.stage = String(r.stage);
+    idea.chat.push(msg);
+    busy.idea = null; save(); render(); focusIdeaChat();
+    if(justFinished) buildIdeaDoc(idea);
+  }catch(e){ busy.idea = {error: errCopy(e)}; render(); }
+}
+
+/* Open a paper the idea chat named, as a branch of the trail */
+function openIdeaPaper(idea, mi, pi){
+  const trail = trailOfIdea(idea); if(!trail) return;
+  const m = idea.chat[mi], rec = m && m.papers && m.papers[pi]; if(!rec) return;
+  const dup = Object.values(trail.nodes).find(n => n.kind==="article" && n.article.title.toLowerCase()===rec.title.toLowerCase());
+  let target = dup;
+  if(!target){
+    const parent = trail.nodes[idea.srcNodeId] || trail.nodes[trail.rootId];
+    target = {id:uid(), parentId:parent.id, kind:"article", origin:"idea", question:idea.title, created:Date.now(),
+      article:{title:rec.title, authors:rec.authors, year:rec.year, venue:rec.venue, preprint:rec.preprint,
+        headline:rec.headline, kind:rec.kind, angle:rec.angle, tags:rec.tags, venueType:rec.venueType, peerGuess:rec.peerGuess},
+      detail:null, candidates:null, returnTo:{nodeId:trail.cur.nodeId, mode:trail.cur.mode}};
+    trail.nodes[target.id] = target;
+    bumpTags(trail, rec.tags, 1);
+  }
+  rec.opened = true;
+  if(!idea.linked.includes(target.id)) idea.linked.push(target.id);
+  app.trailId = trail.id; app.view = "trail"; app.citedOpen = false; app.ideaReturn = idea.id;
+  trail.cur = {nodeId:target.id, mode:"read"};
+  save(); render(); window.scrollTo({top:0});
+  if(!target.detail) loadDetail(trail, target);
+}
+
+/* Leave the board to go read, with a way back */
+function exploreForIdea(idea, topic){
+  const trail = trailOfIdea(idea); if(!trail) return;
+  app.trailId = trail.id;
+  const parent = trail.nodes[idea.srcNodeId] || trail.nodes[trail.rootId];
+  const node = {id:uid(), parentId:parent.id, kind:"explore", created:Date.now(),
+    topic:String(topic), ideaId:idea.id, candidates:null,
+    returnTo:{nodeId:trail.cur.nodeId, mode:trail.cur.mode}};
+  trail.nodes[node.id] = node;
+  app.view = "trail"; app.citedOpen = false; app.ideaReturn = idea.id;
+  trail.cur = {nodeId:node.id, mode:"pick"};
+  save(); render(); window.scrollTo({top:0});
+  loadCandidates(trail, node, false);
+}
+function backToIdea(){
+  const id = app.ideaReturn; if(!id) return;
+  app.ideaReturn = null; app.view = "board"; app.ideaId = id; app.citedOpen = false;
+  document.body.classList.remove("chat-open");
+  save(); render(); window.scrollTo({top:0});
+}
+function focusIdeaChat(){ const el = $(".idea-log"); if(el) el.scrollTop = el.scrollHeight; }
+
+
+/* ---------- The idea write-up ---------- */
+function ideaRefs(idea, trail){
+  const ids = [];
+  if(idea.srcNodeId) ids.push(idea.srcNodeId);
+  (idea.linked||[]).forEach(id => { if(!ids.includes(id)) ids.push(id); });
+  return ids.map(id => trail && trail.nodes[id]).filter(n => n && n.detail);
+}
+async function buildIdeaDoc(idea){
+  const trail = trailOfIdea(idea); if(!trail) return;
+  if(busy.doc && busy.doc.loading) return;
+  busy.doc = {loading:true, msg: idea.doc ? "Updating your write-up…" : "Writing it up…"}; render();
+  const f = fieldById(trail.field);
+  const src = trail.nodes[idea.srcNodeId];
+  const filled = SLOTS.map(([k,label]) => `${label}: ${idea.slots[k] || "(they haven't answered this yet)"}`).join("\n");
+  const refs = ideaRefs(idea, trail);
+  const DTIERS = [{convo:9000, scout:5000, papers:0}, {convo:5000, scout:2000, papers:12}, {convo:3000, scout:0, papers:6}];
+  const make = lvl => {
+  const T = DTIERS[Math.min(lvl, DTIERS.length-1)];
+  const convo = (idea.chat||[]).map(m => (m.role==="user"?"Them: ":"Scout: ") + m.content).join("\n").slice(-T.convo);
+  return `Write up a student's own research idea as a short proposal they could hand to a teacher, a science fair judge, a competition, or a professor they want to work with. Field: ${f.name}. Their wider topic: "${trail.topic}".
+
+THE GAP THEY CLAIMED: "${idea.title}"${idea.gap ? " — " + idea.gap : ""}
+${src ? `It came from: "${src.article.title}" (${src.article.authors||"?"}, ${src.article.year||"n.d."})` : ""}
+
+WHAT THEY HAVE ANSWERED:
+${filled}
+
+PAPERS THEY HAVE READ:
+${papersBlock(trail, T.papers)}
+
+WHAT THEY ASKED SCOUT WHILE READING (their thinking as they went through the papers — use it for background and for what they already ruled out):
+${scoutBlock(trail, T.scout)}
+
+THEIR WHOLE CONVERSATION ABOUT THIS IDEA (the main source — their reasoning, what they ruled out, what they still wonder):
+${convo || "(no conversation yet)"}
+
+Rules:
+- Everything in this document must come from what they said, what they answered, or the papers listed above. Invent nothing. No made-up numbers, no results they have not got, no papers not listed.
+- It is THEIR idea, written in their voice as a proposal — third person about the work, not a chat transcript and not a report about them. Never write "the student" or "they"; write about the question and the plan.
+- Where they have not answered something, say plainly what is still open rather than filling it in. An honest gap is worth more than a confident guess.
+- Clear and specific, the way a good undergraduate proposal reads. Short sentences. Define a technical term the first time it appears. No filler, no "in conclusion", no restating the heading in the first line of a section.
+- Sections, in this order, skipping any you genuinely have nothing for: Background (what's already known, citing the papers they read), The gap, The question, What would be measured, How it would be done, What would show the idea is wrong, What it would take (equipment, data, skills, time — only if the conversation touched it), Still open.
+- Each section is 1-3 short paragraphs. The whole thing is 400-700 words.
+- When a point rests on a paper they read, name it inline with its key in square brackets, like [P2]. Only keys from the list above.
+
+Reply with only a JSON object:
+{"title": string (a specific title for the idea, max 12 words, not the limitation's name reworded),
+ "oneLine": string (one sentence a reader could repeat to someone else),
+ "sections": [{"heading": string, "body": string (plain text, paragraphs separated by \\n\\n)}]}`;
+  };
+  try{
+    const r = await askFitted(make, {cache:false}, 3);
+    const d = Array.isArray(r) ? r[0] : r;
+    const secs = (Array.isArray(d && d.sections) ? d.sections : []).filter(x=>x && x.heading && x.body)
+      .map(x=>({heading:String(x.heading), body:String(x.body)}));
+    if(!secs.length) throw {code:"invalid_json"};
+    idea.doc = { title:String((d && d.title) || idea.title), oneLine:String((d && d.oneLine)||""),
+      sections:secs, updated:Date.now(), fromMessages:(idea.chat||[]).length,
+      refs: refs.map(n=>n.id) };
+    busy.doc = null; save(); render();
+  }catch(e){ busy.doc = {error: errCopy(e)}; render(); }
+}
+function ideaDocText(idea, trail){
+  const d = idea.doc; if(!d) return "";
+  const pmap = {}; readPapers(trail).forEach(({key,node}) => { pmap[key] = node; });
+  const plain = t => String(t).replace(/\s*\[(P\d+)\]/g, (m,k)=> pmap[k] ? ` (${shortCite(pmap[k])})` : "");
+  const refs = (d.refs||[]).map(id=>trail.nodes[id]).filter(Boolean);
+  return d.title + "\n\n" + (d.oneLine ? plain(d.oneLine) + "\n\n" : "")
+    + d.sections.map(s => s.heading + "\n" + plain(s.body)).join("\n\n")
+    + (refs.length ? "\n\nReferences\n" + refs.map(n=>segText(formatCite(n, citeStyle()))).join("\n") : "");
+}
+async function downloadIdeaDoc(idea, fmt){
+  const trail = trailOfIdea(idea); const d = idea.doc; if(!trail || !d) return;
+  const pmap = {}; readPapers(trail).forEach(({key,node}) => { pmap[key] = node; });
+  const plain = t => String(t).replace(/\s*\[(P\d+)\]/g, (m,k)=> pmap[k] ? ` (${shortCite(pmap[k])})` : "");
+  const refs = (d.refs||[]).map(id=>trail.nodes[id]).filter(Boolean);
+  const base = "idea-" + slug(d.title || idea.title);
+  busy.docdl = {msg:"Waiting for you to confirm the download…"}; render();
+  try{
+    if(fmt==="txt"){
+      const dl = await dlPromise; if(!dl) throw {code:"unavailable"};
+      await dl.save({filename: base + ".txt", data: ideaDocText(idea, trail)});
+    } else {
+      const blocks = [{h:1, t:d.title}];
+      if(d.oneLine) blocks.push({t:plain(d.oneLine), i:true});
+      d.sections.forEach(s => {
+        blocks.push({h:2, t:s.heading});
+        plain(s.body).split(/\n{2,}/).forEach(para => { if(para.trim()) blocks.push({t:para.trim()}); });
+      });
+      if(refs.length){
+        blocks.push({h:2, t:"References"});
+        refs.forEach(n => blocks.push({segs: formatCite(n, citeStyle()), hang:true}));
+      }
+      const dl = await dlPromise; if(!dl) throw {code:"unavailable"};
+      await dl.save({filename: base + ".docx", data: buildProseDocx(blocks)});
+    }
+    busy.docdl = {msg:"Downloaded."};
+  }catch(e){
+    if(e && e.code==="declined") busy.docdl = {msg:"Download canceled."};
+    else {
+      try{ await navigator.clipboard.writeText(ideaDocText(idea, trail)); busy.docdl = {msg:"Downloads aren't available here, so the write-up was copied to your clipboard."}; }
+      catch(e2){ busy.docdl = {msg:"Couldn't save or copy it here.", err:true}; }
+    }
+  }
+  render();
+}
+async function copyIdeaDoc(idea){
+  const trail = trailOfIdea(idea); if(!trail) return;
+  try{ await navigator.clipboard.writeText(ideaDocText(idea, trail)); busy.docdl = {msg:"Copied the write-up."}; }
+  catch(e){ busy.docdl = {msg:"Couldn't reach the clipboard.", err:true}; }
+  render();
+}
+/* A Word file of headings and paragraphs */
+function buildProseDocx(blocks){
+  const x = t => String(t).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  const font = '<w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>';
+  const run = (t, o) => `<w:r><w:rPr>${font}${o&&o.b?"<w:b/>":""}${o&&o.i?"<w:i/>":""}<w:sz w:val="${o&&o.sz||24}"/></w:rPr><w:t xml:space="preserve">${x(t)}</w:t></w:r>`;
+  const body = blocks.map(bl => {
+    if(bl.segs){
+      return `<w:p><w:pPr><w:spacing w:before="0" w:after="120" w:line="360" w:lineRule="auto"/><w:ind w:left="720" w:hanging="720"/></w:pPr>${bl.segs.map(sg=>run(sg.t,{i:sg.i})).join("")}</w:p>`;
+    }
+    const h = bl.h || 0;
+    const sp = h===1 ? 'w:before="0" w:after="160"' : h===2 ? 'w:before="280" w:after="100"' : 'w:before="0" w:after="160"';
+    const jc = h===1 ? '<w:jc w:val="center"/>' : "";
+    return `<w:p><w:pPr>${jc}<w:spacing ${sp} w:line="360" w:lineRule="auto"/></w:pPr>${run(bl.t,{b:h>0, i:bl.i, sz: h===1?32:h===2?26:24})}</w:p>`;
+  }).join("");
+  const doc = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${body}<w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="720" w:footer="720" w:gutter="0"/></w:sectPr></w:body></w:document>`;
+  return zipStore([
+    ["[Content_Types].xml", '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>'],
+    ["_rels/.rels", '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'],
+    ["word/document.xml", doc]
+  ]);
+}
+
+/* ---------- Rendering ---------- */
+function peerBadge(node, big){
+  const p = peerOf(node), a = node.article || {};
+  const cls = p.k==="yes" ? "ok" : p.k==="no" ? "warn" : p.k==="retracted" ? "bad" : "mute";
+  const icon = p.k==="yes" ? "✓" : p.k==="no" ? "◷" : p.k==="retracted" ? "✕" : "?";
+  const sure = a.peer ? "" : " guess";
+  const extra = [];
+  if(typeof a.citedBy === "number") extra.push(`<span class="vb">Cited by ${a.citedBy.toLocaleString()}</span>`);
+  const miss = node.verified === false || (node.verified && node.verified.found === false);
+  if(miss) extra.push(`<span class="vb miss">Not found in the database</span>`);
+  return `<span class="pb ${cls}${sure}" title="${esc(a.peer ? "Confirmed by a live database lookup" : "Based on the venue Claude identified. This page can't reach a database to confirm it, so check the publisher.")}">${icon} ${esc(p.label)}${a.peer?"":" (unconfirmed)"}</span>${extra.join("")}`;
+}
+
+const LOGO = '<svg viewBox="-3 -3 34 34" aria-hidden="true"><path d="M5 23c4-2 5-7 9-9s5-7 9-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M14 14c2 3 5 4 8 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".45"/><circle cx="5" cy="23" r="3" fill="var(--mark)" stroke="currentColor" stroke-width="1.8"/><circle cx="23" cy="5" r="3" fill="var(--surface)" stroke="currentColor" stroke-width="1.8"/></svg>';
+
+function netPill(){
+  if(net.state==="on") return `<span class="netpill on" title="Papers are being checked against OpenAlex, a free database of 250 million scholarly works">Live lookups on</span>`;
+  if(net.state==="off") return `<span class="netpill off" title="This page has no internet access, so papers can't be checked against a database. Everything comes from Claude's knowledge — open the original to confirm details.">No database access</span>`;
+  return `<span class="netpill wait">Checking database access…</span>`;
+}
+function ideaTab(){
+  const n = allIdeas().length;
+  return `<button class="btn idea-tab${app.view==="board"?" on":""}" data-act="board"><svg width="15" height="15" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.5a5.5 5.5 0 0 0-3 10.1V15h6v-2.4a5.5 5.5 0 0 0-3-10.1ZM8 17h4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>Ideas${n?` (${n})`:""}</button>`;
+}
+function topbar(extra){
+  return `<header class="bar"><button class="brand" data-act="home">${LOGO}Trailhead</button><span class="bar-right">${netPill()}${extra||""}</span></header>`
+   + (aiState==="off" ? `<div class="notice">AI features only work when this page is opened inside Claude. You can still browse saved trails.</div>` : "")
+   + (aiState==="denied" ? `<div class="notice">Claude access is turned off for this page, so new articles, summaries, and chat are unavailable.</div>` : "");
+}
+
+function renderHome(){
+  const art = `<svg class="hero-art" viewBox="0 0 420 360" role="img" aria-label="A branching trail of research papers">
+    <path class="path faint" d="M60 300 C110 270 120 220 170 205 M170 205 C200 150 150 110 120 70 M250 170 C300 190 330 240 370 260 M290 105 C330 90 350 60 380 40"/>
+    <path class="path draw" d="M60 300 C110 270 120 220 170 205 C220 190 230 180 250 170 C270 150 270 120 290 105 C310 90 320 70 330 50"/>
+    <circle class="node" cx="120" cy="70" r="9"/><circle class="node" cx="370" cy="260" r="9"/><circle class="node" cx="380" cy="40" r="9"/>
+    <circle class="node on" cx="60" cy="300" r="12"/><circle class="node" cx="170" cy="205" r="11"/><circle class="node" cx="250" cy="170" r="11"/><circle class="node" cx="290" cy="105" r="11"/><circle class="node on" cx="330" cy="50" r="12"/>
+  </svg>`;
+  const recent = store.trails.length ? `<h2 class="section-title">Pick up a trail</h2><div class="recent">${store.trails.map(t=>{
+      const n = Object.values(t.nodes).filter(x=>x.kind==="article").length;
+      return `<div class="recent-item"><strong>${esc(t.topic)}</strong><span>${esc(fieldById(t.field).name)}, ${n} article${n===1?"":"s"} opened</span>
+      <div class="row"><button class="btn" data-act="resume" data-id="${t.id}">Resume</button><button class="link" data-act="deltrail" data-id="${t.id}">Delete</button></div></div>`;
+    }).join("")}</div>` : "";
+  return topbar(allIdeas().length ? ideaTab() : "") + `<main class="wrap">
+    <section class="hero">
+      <div><h1>Start with one paper. Follow it anywhere.</h1>
+      <p>Choose a field, pick a topic, and read five plain-language headlines from real research. Each paper you open comes with a short summary and a crash course in its vocabulary, so the next one is easier to read.</p></div>
+      ${art}
+    </section>
+    <p class="lookup-note">${net.state==="off"
+      ? "This page can't reach the internet, so papers, summaries and peer-review labels all come from Claude's knowledge of the published literature rather than a live database. Treat them as a starting point: every article has a link to the real paper, and you should open it before relying on any specific number."
+      : "Every paper is checked against OpenAlex, a free database of 250 million scholarly works, for its real title, authors, venue, DOI, citation count and peer-review status."}</p>
+    <h2 class="section-title">Choose a field</h2>
+    <ul class="fields">${FIELDS.map(f=>`<li><button class="field-row" data-act="field" data-id="${f.id}"><span class="glyph">${f.glyph}</span><span><span class="name">${f.name}</span><br><span class="blurb">${f.blurb}</span></span><span class="go">Explore</span></button></li>`).join("")}</ul>
+    ${recent}
+    ${store.trails.length ? `<div class="backup">
+      <div class="backup-t">Your trails live in this browser only</div>
+      <p class="backup-p">Save a backup file so you can restore your research on another device, or if this browser's data gets cleared.</p>
+      <div class="actions">
+        <button class="btn primary" data-act="backup">Save a backup</button>
+        <label class="btn" for="restorein">Restore from a backup</label>
+        <input id="restorein" type="file" accept=".json,application/json" hidden>
+      </div>
+      ${busy.backup ? `<p class="${busy.backup.err?"err":"status"}">${esc(busy.backup.msg)}</p>` : ""}
+    </div>` : ""}
+    <footer>Papers, summaries, and lessons are written by Claude from what it knows of the published literature, and it avoids journals on Beall's list of potentially predatory publishers. Open the paper to confirm details before citing it.</footer>
+  </main>`;
+}
+
+function renderField(){
+  const f = fieldById(app.fieldId);
+  const c = app.cats;
+  let cats = "";
+  if(c){
+    if(c.items && c.items.length) cats += `<div class="cats">${c.items.map((x,i)=>`<button class="cat" data-act="cat" data-i="${i}"><b>${esc(x.name)}</b><span>${esc(x.explainer)}</span>${x.question?`<i>${esc(x.question)}</i>`:""}</button>`).join("")}</div>`;
+    if(c.loading) cats += `<p class="status">Mapping out areas of ${esc(f.name.toLowerCase())}…</p>` + (c.items ? "" : `<div class="cats">${"<div class='skel'></div>".repeat(6)}</div>`);
+    if(c.error) cats += `<p class="err">${esc(c.error)}</p>`;
+    if(!c.loading && c.items && c.items.length) cats += `<div class="actions"><button class="btn" data-act="morecats">Show other areas</button></div>`;
+  }
+  return topbar() + `<main class="field-page">
+    <button class="link" data-act="home">All fields</button>
+    <h1>What in ${esc(f.name.toLowerCase())} do you want to explore?</h1>
+    <form class="search" data-form="topic">
+      <input name="topic" type="text" placeholder="Try a topic, like ${f.id==="cs"?"how chatbots learn language":f.id==="bio"?"why we age":f.id==="eng"?"earthquake-proof buildings":f.id==="phys"?"dark matter":"batteries that last longer"}" aria-label="Topic" autocomplete="off">
+      <button class="btn primary" type="submit" ${aiState!=="ok"&&aiState!=="pending"?"disabled":""}>Find articles</button>
+    </form>
+    <div class="or">No topic in mind?</div>
+    ${c ? "" : `<button class="btn" data-act="cats" ${aiState!=="ok"&&aiState!=="pending"?"disabled":""}>Show me areas to choose from</button>`}
+    ${cats}
+  </main>`;
+}
+
+function treeHTML(trail, id){
+  const n = trail.nodes[id];
+  const kids = Object.values(trail.nodes).filter(k=>k.parentId===id).sort((a,b)=>a.created-b.created);
+  const isCur = trail.cur.nodeId===id;
+  const label = n.kind==="root" ? trail.topic : n.kind==="explore" ? ("Exploring: " + n.topic) : (n.article.headline || n.article.title);
+  const cls = ["tnode", isCur?"cur":"", n.verdict==="backed"?"backed":""].join(" ");
+  const via = (n.kind==="explore" || n.origin==="idea") ? `<span class="via">For your idea</span>` : n.origin==="chat" ? `<span class="via">Opened from your question</span>` : n.origin==="limitation" ? `<span class="via">Follow-up on a limitation</span>` : "";
+  return `<li><button class="${cls}" data-act="jump" data-id="${id}" ${isCur?'aria-current="true"':""}><span class="dot"></span><span>${esc(label)}${via}</span></button>${kids.length?`<ul>${kids.map(k=>treeHTML(trail,k.id)).join("")}</ul>`:""}</li>`;
+}
+
+function renderPick(trail, node){
+  const key = node.id+":c", b = busy[key];
+  const title = node.kind==="root" ? `Five ways into ${trail.topic}` : node.kind==="explore" ? `Papers on ${node.topic}` : "Five directions from here";
+  const sub = node.kind==="explore" ? `Picked to test your idea: ${(ideaById(node.ideaId)||{}).title || "your idea"}. Open what looks useful, then head back to the board.`
+    : trail.lens ? `Each of these connects ${trail.topic} to ${trail.lens}, from a different corner of the field.` : node.kind==="root" ? "Each headline stands for a real paper from a different corner of the field. Open whichever sounds most interesting."
+    : `Branching out from “${node.article.headline || node.article.title}”. These lean toward what you've been choosing, with a couple of surprises.`;
+  let body = "";
+  if(node.candidates && !(b && b.loading)){
+    body = `<ul class="cands">${node.candidates.map((c,i)=>`<li><button class="cand" data-act="open" data-i="${i}"><span class="angle">${c.kind?`<span class="kind">${esc(c.kind)}</span>`:""}${esc(c.angle||"")}${c.preprint?' <span class="chip">Preprint</span>':""}</span><span class="hl">${esc(c.headline)}</span><span class="cand-meta">${c.year?`<span class="cand-year">Published ${esc(c.year)}</span>`:""}${peerBadge({article:c, checked:c.checked, verified:c.verified})}</span></button></li>`).join("")}</ul>`;
+  }
+  if(b && b.loading) body = `<p class="status">Finding five papers across the field…</p>` + "<div class='skel'></div>".repeat(5);
+  if(b && b.error) body += `<p class="err">${esc(b.error)}</p>`;
+  const lens = `<div class="lens">${trail.lens
+      ? `<span class="lens-on">Aimed at <b>${esc(trail.lens)}</b></span><button class="link" data-act="lensclear">Remove focus</button>`
+      : `<form class="lens-form" data-form="lens"><label for="lensin">Aim these at an application (optional)</label><span class="lens-row"><input id="lensin" name="lens" type="text" autocomplete="off" placeholder="e.g. surgery, farming, space"><button class="btn" type="submit">Apply</button></span></form>`}</div>`;
+  const back = node.kind==="explore" ? `<button class="btn primary back-btn" data-act="toidea"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4 6.5 10l6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Back to your idea</button>` : node.kind==="article" ? `<button class="link" data-act="reread">Back to “${esc(node.article.headline||node.article.title)}”</button>` : `<button class="link" data-act="fieldback">Change topic</button>`;
+  return `<div class="crumb">${back}</div>
+    <h1 class="pick-title">${esc(title)}</h1><p class="pick-sub">${esc(sub)}</p>
+    ${lens}
+    ${body}
+    <div class="actions">
+      ${node.candidates || (b && b.error) ? `<button class="btn" data-act="refresh" ${b&&b.loading?"disabled":""}>${node.candidates?"None of these, show five others":"Try again"}</button>` : ""}
+    </div>`;
+}
+
+function renderRead(trail, node){
+  const a = node.article, d = node.detail, b = busy[node.id+":d"];
+  const back = node.returnTo && trail.nodes[node.returnTo.nodeId];
+  const backLabel = (node.origin==="chat"||node.origin==="limitation"||node.origin==="idea") ? "Go back to where you were" : "Not for me, go back";
+  let body;
+  if(d){
+    let summ = Array.isArray(d.summary) ? d.summary : [String(d.summary)];
+    // A note belongs beside the summary, not inside it — lift one out of older articles too
+    const notes = [];
+    if(d.note) notes.push(d.note);
+    const META = /\b(I|I'm|my|me|the title given|this summary|the record|does not match|doesn't match|cannot identify|can't identify|could not identify|as far as I|I believe|I know|I recall|unsure|not certain|appears to be a different)\b/i;
+    const NOTE_LEAD = /^\s*(Note that|Note|Caveat|Important)\b[:,]?\s*/i;
+    summ = summ.map(para => {
+      let t = String(para||"").trim();
+      if(!NOTE_LEAD.test(t) && !/\s(Note|Caveat)\b[:,]/.test(t)) return t;
+      // split into sentences, then peel off the meta ones and keep the rest as prose
+      const parts = t.split(/(?<=[.!?])\s+/);
+      const keep = [];
+      let peeling = NOTE_LEAD.test(t);
+      for(let sent of parts){
+        const lead = NOTE_LEAD.test(sent);
+        if(lead) peeling = true;
+        const bare = sent.replace(NOTE_LEAD, "").trim();
+        if(peeling && (lead || META.test(bare))){ if(bare) notes.push(bare); continue; }
+        peeling = false;
+        keep.push(sent);
+      }
+      return keep.join(" ").trim();
+    }).filter(t => t);
+    termMap = buildTermMap(d, a);
+    const used = new Set();
+    summ.forEach(p => markup(p, termMap, used, false));
+    const missing = (d.terms||[]).map(t=>termKey(t.term)).filter(k=>termMap[k] && !used.has(k));
+    used.clear();
+    const hasLesson = !!(d.lessonIntro || (d.connections||[]).length || missing.length || (d.buildsOn||[]).length);
+    const linkTerm = w => { const k = lookupTerm(w, termMap); return k ? termSpan(w, k, termMap) : `<b>${esc(w)}</b>`; };
+    body = `
+      <h2>What the paper found</h2>
+      ${notes.length ? `<div class="pnote"><span class="pnote-k">About this record</span>${notes.map(n=>`<p>${esc(n.replace(/\[\[|\]\]/g,""))}</p>`).join("")}</div>` : ""}
+      ${Object.keys(termMap).length ? `<p class="term-hint"><span class="term demo">Colored words</span> are the crash course. ${canHover ? "Hover over or click" : "Tap"} one to see what it means.</p>` : ""}
+      ${summ.length ? `<div class="prose">${summ.map(p=>`<p>${markup(p, termMap, used, false)}</p>`).join("")}</div>` : ""}
+      ${d.keyFinding?`<p class="finding">${markup(d.keyFinding, termMap, new Set(), true)}</p>`:""}
+      ${hasLesson ? `<h2>How these words fit together</h2>
+      <div class="lesson">
+        ${d.lessonIntro?`<p class="intro">${markup(d.lessonIntro, termMap, new Set(), true)}</p>`:""}
+        ${(d.connections||[]).length ? `<ul class="links">${d.connections.map(c=>`<li>${linkTerm(c.from)} and ${linkTerm(c.to)}: ${esc(c.how)}</li>`).join("")}</ul>`:""}
+        ${missing.length ? `<p class="known">More words from this paper: ${missing.map(k=>termSpan(termMap[k].term, k, termMap)).join(", ")}</p>`:""}
+        ${(d.buildsOn||[]).length ? `<p class="known">Builds on words you already learned: ${d.buildsOn.map(x=>{ const k = lookupTerm(x, termMap); return k ? termSpan(x, k, termMap) : esc(x); }).join(", ")}</p>`:""}
+      </div>` : ""}
+      ${(d.limitations||[]).length ? `<h2>Limitations of this work</h2>
+      <ul class="lims">${d.limitations.map((L,i)=>`<li><button class="lim" data-act="lim" data-id="${node.id}" data-i="${i}"><span class="lim-name">${esc(L.name)}</span><span class="lim-go">What's being done →</span></button></li>`).join("")}</ul>` : ""}
+      ${(()=>{ const L = sourceLink(node); return `<div class="orig">
+        <a class="btn primary" href="${esc(L.url)}" target="_blank" rel="noopener">Open the original article
+          <svg width="15" height="15" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4h9v9M16 4 6 14M13 16H4V7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        ${L.direct ? `<a class="btn" href="${esc(scholar(a))}" target="_blank" rel="noopener">Search Google Scholar</a>` : ""}
+        <span class="orig-note">${esc(L.note)}</span>
+      </div>`; })()}
+      <p class="fineprint">Written by Claude from what it knows about this paper, not copied from it — it has no live access to the text, so open the original before relying on any specific number.</p>`;
+  } else if(b && b.error){
+    body = `<p class="err">${esc(b.error)}</p><button class="btn" data-act="retrydetail">Try again</button>`;
+  } else {
+    body = `<p class="status">Reading the paper and preparing your crash course…</p>` + "<div class='skel' style='height:160px'></div><div class='skel' style='height:260px'></div>";
+  }
+  return `<article class="read">
+    <div class="crumb">${back?`<button class="link" data-act="back">${(node.origin==="chat"||node.origin==="limitation"||node.origin==="idea")?"Back to where you were":"Back to the five articles"}</button>`:""}</div>
+    ${node.question?`<p class="status">${node.origin==="idea"?"Opened while working on your idea:":node.origin==="limitation"?"Opened as follow-up:":"Opened to answer:"} “${esc(node.question)}”</p>`:""}
+    <div class="read-badges">${a.year?`<span class="read-year">Published ${esc(a.year)}</span>`:""}${peerBadge(node)}</div><div class="angle">${a.kind?`<span class="kind">${esc(a.kind)}</span>`:""}${esc(a.angle||"")}</div>
+    <h1>${esc(a.headline || a.title)}</h1>
+    ${node.article.retracted?`<p class="retract">This paper has been retracted. Treat anything in it with caution and don't cite it as a finding.</p>`:""}
+    <div class="meta"><cite>${esc(a.title)}</cite><br>${esc(a.authors||"")}${a.year?`, ${esc(a.year)}`:""}${a.venue?`. ${esc(a.venue)}`:""}</div>
+    ${d ? `<p class="cite-note">${node.cited!==false ? `In your works cited. <button class="link" data-act="citetoggle" data-id="${node.id}">Remove</button> <button class="link" data-act="cited">View list</button>` : `Not in your works cited. <button class="link" data-act="citetoggle" data-id="${node.id}">Add it</button>`}</p>` : ""}
+    ${body}
+    <div class="stickyact actions">
+      ${d ? `<a class="btn" href="${esc(sourceLink(node).url)}" target="_blank" rel="noopener">Open original</a>` : ""}
+      <button class="btn" data-act="back">${backLabel}</button>
+      <button class="btn primary" data-act="deeper" ${d?"":"disabled"}>I like it, go deeper</button>
+    </div>
+  </article>`;
+}
+
+function renderChat(trail){
+  const sugg = trail.cur.mode==="read"
+    ? ["How exactly did they test this?", "What numbers did they actually report?", "Why hasn't this been done before?", "Who disagrees with this paper?"]
+    : ["Which of these is best for a beginner?", "What's the big open question in this topic?"];
+  const log = trail.chat.map((m,i)=>{
+    if(m.role==="user") return `<div class="msg u">${esc(m.content)}</div>`;
+    let src = "";
+    if(m.jump){
+      const j = m.jump, exists = !!trail.nodes[j.nodeId];
+      src = `<div class="src${j.undone?" undone":""}"><span class="src-k">${j.undone?"Source removed":(j.reused?"Answered from your trail":"Source")}</span><span class="src-t">“${esc(j.label)}”</span>${j.why?`<span class="src-why">${esc(j.why)}</span>`:""}${(j.considered||[]).length && !j.undone ? `<details class="src-also"><summary>Also considered ${j.considered.length}</summary>${j.considered.map(c=>`<div><b>${esc(c.title)}</b>${c.year?` (${esc(c.year)})`:""}${c.why?`. ${esc(c.why)}`:""}</div>`).join("")}</details>` : ""}
+        <span class="src-acts">${exists && !j.undone ? `<button class="link" data-act="srcopen" data-id="${j.nodeId}">Open paper</button>` : ""}${j.moved!==false && !j.undone ? `<button class="link" data-act="undo" data-i="${i}">Undo, go back</button>` : ""}</span></div>`;
+    }
+    let opts = "";
+    if(m.options && m.options.length){
+      const busyNow = !!(busy.chat && busy.chat.loading);
+      const n = m.options.length;
+      const done = m.chosen !== null && m.chosen >= 0;
+      const at = done ? m.chosen : Math.min(Math.max(m.view||0, 0), n-1);
+      const o = m.options[at];
+      const card = `<button class="opt${done?" picked":""}" data-act="pickopt" data-mi="${i}" data-j="${at}" ${done||busyNow?"disabled":""}>
+          <span class="opt-hl">${esc(o.headline)}</span>
+          <span class="opt-meta">${o.year?`<span class="opt-year">${esc(o.year)}</span>`:""}${peerBadge({article:o})}</span>
+          ${o.venue?`<span class="opt-venue">${esc(o.venue)}</span>`:""}
+          ${o.why?`<span class="opt-why">${esc(o.why)}</span>`:""}
+          <span class="${done?"opt-tag":"opt-go"}">${done?"You opened this":"Open and answer →"}</span>
+        </button>`;
+      const nav = (n>1 && !done) ? `<div class="opt-nav">
+          <button class="opt-arrow" data-act="optnav" data-mi="${i}" data-d="-1" ${at===0?"disabled":""} aria-label="Previous paper">‹</button>
+          <span class="opt-count">${at+1} of ${n}</span>
+          <button class="opt-arrow" data-act="optnav" data-mi="${i}" data-d="1" ${at===n-1?"disabled":""} aria-label="Next paper">›</button>
+        </div>` : "";
+      const dots = (n>1 && !done) ? `<div class="opt-dots">${m.options.map((_,k)=>`<button class="dot${k===at?" on":""}" data-act="optgo" data-mi="${i}" data-j="${k}" aria-label="Paper ${k+1}"></button>`).join("")}</div>` : "";
+      opts = `${m.optLead && !done ? `<div class="opt-lead">${esc(m.optLead)}</div>` : ""}
+        <div class="opts">${nav}${card}${dots}</div>
+        ${!done && !busyNow ? `<div class="opt-alt"><button class="link" data-act="moreopts" data-mi="${i}">None of these, find others</button></div>` : ""}`;
+    }
+    return `<div class="msg a${m.noSource?" nosrc":""}${m.options?" haspts":""}">${esc(m.content)}${opts}${src}</div>`;
+  }).join("");
+  const b = busy.chat;
+  return `<div class="chat-head"><div><h2>${GUIDE}</h2><div class="chat-sub">Your trail guide. Every answer comes from a paper.</div></div><button class="link chat-close" data-act="closechat">Close</button></div>
+    <div class="chat-log" aria-live="polite">
+      ${trail.chat.length ? log : `<div class="chat-empty">Ask ${GUIDE} anything. ${GUIDE} answers from a real paper — the one you're reading, going deeper than the summary on screen, or a new one it finds when yours can't answer you. Any new paper joins your trail and your works cited, and you can always undo.
+        <div class="suggest">${sugg.map(q=>`<button data-act="suggest">${esc(q)}</button>`).join("")}</div></div>`}
+      ${b && b.loading && b.streaming!==undefined ? `<div class="msg a" id="scout-stream">${esc(b.streaming)}</div>` : ""}
+      ${b && b.loading && b.status ? `<div class="msg a working" id="scout-status">${esc(b.status)}</div>`:""}
+      ${b && b.error ? `<p class="err">${esc(b.error)}</p>`:""}
+    </div>
+    <form class="chat-form" data-form="chat">
+      <textarea name="q" rows="1" placeholder="Ask ${GUIDE} a question" aria-label="Your question for ${GUIDE}"></textarea>
+      <button class="btn primary" type="submit" ${b&&b.loading?"disabled":""}>Ask</button>
+    </form>`;
+}
+
+
+function renderCited(trail){
+  const style = citeStyle();
+  const inc = sortedCited(trail);
+  const exc = Object.values(trail.nodes).filter(n => n.kind==="article" && n.detail && n.cited === false);
+  const entry = (n, on) => `<li class="cite${on?"":" off"}"><div class="cite-text">${segHTML(formatCite(n, style))}</div>
+    <div class="cite-acts"><button class="link" data-act="citetoggle" data-id="${n.id}">${on?"Remove":"Add back"}</button><button class="link" data-act="jump" data-id="${n.id}">Open article</button><a class="link" href="${esc(scholar(n.article))}" target="_blank" rel="noopener">Check on Google Scholar</a></div></li>`;
+  const dl = busy.dl;
+  return `
+  <h1 class="pick-title">Works cited</h1>
+  <p class="pick-sub">Every article you open on this trail is added here automatically, formatted and sorted. Remove any you didn't use.</p>
+  <div class="seg" role="group" aria-label="Citation style">${Object.entries(STYLES).map(([k,v])=>`<button class="${k===style?"on":""}" aria-pressed="${k===style}" data-act="citestyle" data-style="${k}">${v.label}</button>`).join("")}</div>
+  ${inc.length ? `<h2 class="cite-heading">${STYLES[style].heading}</h2><ol class="cites">${inc.map(n=>entry(n,true)).join("")}</ol>` : `<p class="status">No sources yet. Open an article and it will show up here.</p>`}
+  <div class="actions">
+    ${dlState!=="off" ? `<button class="btn primary" data-act="dl" data-fmt="docx" ${inc.length?"":"disabled"}>Download Word document</button>
+    <button class="btn" data-act="dl" data-fmt="txt" ${inc.length?"":"disabled"}>Download text</button>
+    <button class="btn" data-act="dl" data-fmt="bib" ${inc.length?"":"disabled"}>Download BibTeX</button>` : ""}
+    <button class="btn" data-act="copycite" ${inc.length?"":"disabled"}>Copy all</button>
+  </div>
+  <div class="actions" style="margin-top:28px"><button class="btn primary back-btn" data-act="citeclose"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4 6.5 10l6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Back to your research</button></div>
+  ${dl ? `<p class="${dl.err?"err":"status"}">${esc(dl.msg)}</p>` : ""}
+  ${exc.length ? `<h2 class="cite-heading" style="margin-top:36px">Not included</h2><ol class="cites">${exc.map(n=>entry(n,false)).join("")}</ol>` : ""}
+  <p class="fineprint">Entries for papers found in the live lookup use that database's real author list, DOI, volume and pages. Where the lookup didn't reach or didn't find the paper, those details come from Claude's knowledge and are left out when it isn't sure. Check each entry against the paper before you hand it in.</p>`;
+}
+
+
+function renderIdeaDoc(idea, trail, pmap){
+  const d = idea.doc, b = busy.doc, dl = busy.docdl;
+  const filledN = SLOTS.filter(([k])=>idea.slots[k]).length;
+  const chip = t => String(t).replace(/\s*\[(P\d+)\]/g, (m,k)=>{
+    const n = pmap[k]; if(!n) return "";
+    return ` <button class="paperchip" data-act="ideajump" data-id="${n.id}" title="${esc(n.article.title||"")}">${esc(shortCite(n))}</button>`;
+  });
+  const para = t => String(t).split(/\n{2,}/).filter(x=>x.trim()).map(x=>`<p>${chip(esc(x.trim()))}</p>`).join("");
+  if(!d){
+    return `<section class="writeup empty">
+      <h2 class="writeup-h">The write-up</h2>
+      <p class="writeup-p">When the five boxes are answered, this becomes a short proposal you could hand to a teacher, a judge, or a professor \u2014 built only from what you've said and the papers you've read. ${filledN<SLOTS.length?`${SLOTS.length-filledN} to go, but you can start it early.`:""}</p>
+      <div class="actions">
+        <button class="btn primary" data-act="builddoc" ${b&&b.loading?"disabled":""}>${b&&b.loading?esc(b.msg||"Writing\u2026"):"Write it up"}</button>
+      </div>
+      ${b&&b.error?`<p class="err">${esc(b.error)}</p>`:""}
+    </section>`;
+  }
+  const behind = (idea.chat||[]).length - (d.fromMessages||0);
+  const refs = (d.refs||[]).map(id=>trail.nodes[id]).filter(Boolean);
+  return `<section class="writeup">
+    <div class="writeup-bar">
+      <h2 class="writeup-h">The write-up</h2>
+      <div class="writeup-acts">
+        ${behind>0?`<span class="behind">${behind} new message${behind===1?"":"s"} since this was written</span>`:""}
+        <button class="btn${behind>0?" primary":""}" data-act="builddoc" ${b&&b.loading?"disabled":""}>${b&&b.loading?esc(b.msg||"Updating\u2026"):"Update"}</button>
+        ${dlState!=="off"?`<button class="btn" data-act="dldoc" data-fmt="docx">Download Word</button>`:""}
+        <button class="btn" data-act="copydoc">Copy</button>
+      </div>
+    </div>
+    ${b&&b.error?`<p class="err">${esc(b.error)}</p>`:""}
+    ${dl?`<p class="${dl.err?"err":"status"}">${esc(dl.msg)}</p>`:""}
+    <article class="paper">
+      <h1>${esc(d.title)}</h1>
+      ${d.oneLine?`<p class="paper-lede">${chip(esc(d.oneLine))}</p>`:""}
+      ${d.sections.map(x=>`<h2>${esc(x.heading)}</h2>${para(x.body)}`).join("")}
+      ${refs.length?`<h2>References</h2><ol class="cites">${refs.map(n=>`<li class="cite"><div class="cite-text">${segHTML(formatCite(n, citeStyle()))}</div></li>`).join("")}</ol>`:""}
+    </article>
+    <p class="fineprint">Written from your answers, your conversation, and the papers on your trail. Check every citation against the original before you hand this in.</p>
+  </section>`;
+}
+
+function renderBoardPage(){
+  const idea = app.ideaId ? ideaById(app.ideaId) : null;
+  return topbar(`<button class="btn primary back-btn" data-act="boardclose"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4 6.5 10l6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Back to your research</button>`)
+    + `<main class="boardpage">${idea ? renderIdea(idea) : renderBoardList()}</main>`;
+}
+
+function renderBoardList(){
+  const ideas = allIdeas();
+  const groups = [];
+  ideas.forEach(x => {
+    let g = groups.find(y => y.trailId === x.trailId);
+    if(!g){ g = {trailId:x.trailId, topic:x.trailTopic || "Earlier research", field:x.field, items:[]}; groups.push(g); }
+    g.items.push(x);
+  });
+  return `<h1 class="pick-title">Your ideas</h1>
+  <p class="pick-sub">Every limitation you claim lands here and stays, across every topic you explore. Open one and Scout asks the questions that turn it into something you could test.</p>
+  ${groups.length ? groups.map(g=>`
+    <section class="ideagroup">
+      <h2 class="ideagroup-h">${esc(g.topic)}${g.field && fieldById(g.field) ? ` <span class="ideagroup-f">${esc(fieldById(g.field).name)}</span>` : ""}</h2>
+      <ul class="ideas">${g.items.map(x=>{
+        const t = trailOfIdea(x), src = t && t.nodes[x.srcNodeId];
+        const done = SLOTS.filter(([k])=>x.slots[k]).length;
+        const msgs = (x.chat||[]).filter(m=>m.role==="user").length;
+        return `<li><button class="ideacard" data-act="openidea" data-id="${x.id}">
+          <span class="ideacard-t">${esc(x.title)}</span>
+          <span class="ideacard-m">${done} of ${SLOTS.length} answered${msgs?` \u00b7 ${msgs} message${msgs===1?"":"s"}`:""}${src?` \u00b7 from \u201c${esc(src.article.headline||src.article.title)}\u201d`:""}</span>
+          <span class="ideabar"><span style="width:${Math.round(done/SLOTS.length*100)}%"></span></span>
+        </button></li>`;
+      }).join("")}</ul>
+    </section>`).join("")
+   : `<p class="status">Nothing here yet. Open a paper, read what it can't do, and press \u201cI want to work on this\u201d on one of its limitations.</p>`}`;
+}
+
+function renderIdea(idea){
+  const trail = trailOfIdea(idea);
+  const src = trail && trail.nodes[idea.srcNodeId];
+  const b = busy.idea;
+  const lastExplore = [...idea.chat].reverse().find(m=>m.explore && !m.exploreUsed);
+  const pmap = {}; readPapers(trail).forEach(({key,node}) => { pmap[key] = node; });
+  const log = idea.chat.map((m,i)=>{
+    if(m.role==="user") return `<div class="msg u">${esc(m.content)}</div>`;
+    const {html, used} = linkKeys(m.content, pmap);
+    let x = "";
+    if(m.captured){
+      const keys = Array.isArray(m.captured) ? m.captured : [m.captured];
+      const labs = keys.map(k => (SLOTS.find(([kk])=>kk===k)||[null,k])[1]);
+      if(labs.length) x += `<div class="cap">Saved to <b>${labs.map(esc).join("</b>, <b>")}</b></div>`;
+    }
+    // the callout only earns its place when it says more than the inline citation did
+    if(m.link && m.link.what && !used.has(m.link.nodeId)){
+      const n = trail && trail.nodes[m.link.nodeId];
+      x += `<div class="src"><span class="src-k">Already in what you've read</span><span class="src-t">${n?esc(shortCite(n))+" \u00b7 ":""}\u201c${esc(m.link.label)}\u201d</span><span class="src-why">${esc(m.link.what)}</span><span class="src-acts"><button class="link" data-act="ideajump" data-id="${m.link.nodeId}">Open that paper</button></span></div>`;
+    }
+    if(m.papers && m.papers.length){
+      x += `<div class="recs"><span class="src-k">Papers worth opening</span>${m.papers.map((o,j)=>`
+        <button class="rec" data-act="ideapaper" data-mi="${i}" data-j="${j}">
+          <span class="rec-top">${o.year?`<span class="rec-cite">${esc(String(o.authors||"").split(/,| and | & /)[0].replace(/\s*et al\.?$/i,"").trim().split(/\s+/).pop()||"")} ${esc(o.year)}</span>`:""}${peerBadge({article:o})}</span>
+          <span class="rec-hl">${esc(o.headline)}</span>
+          ${o.venue?`<span class="rec-venue">${esc(o.venue)}</span>`:""}
+          ${o.why?`<span class="rec-why">${esc(o.why)}</span>`:""}
+          <span class="rec-go">${o.opened?"Opened \u00b7 open again":"Open and add to my trail \u2192"}</span>
+        </button>`).join("")}</div>`;
+    }
+    if(m.explore) x += `<div class="exp"><span class="src-k">Worth reading up on</span><span class="src-t">${esc(m.explore.topic)}</span>${m.explore.why?`<span class="src-why">${esc(m.explore.why)}</span>`:""}<span class="src-acts"><button class="link" data-act="explore" data-i="${i}">Keep exploring \u2192</button></span></div>`;
+    return `<div class="msg a">${html}${x}</div>`;
+  }).join("");
+  const scouted = ((trail && trail.chat) || []).some(m => m.role === "user");
+  const starters = (scouted ? ["Let's use the idea I was discussing with Scout"] : [])
+    .concat(["I'm not sure where to start", "Why hasn't anyone fixed this?", "Here's what I'd try:"]);
+  return `<div class="crumb"><button class="link" data-act="boardlist">\u2190 All your ideas</button>${idea.trailTopic?`<span class="idea-trail">From your work on ${esc(idea.trailTopic)}</span>`:""}</div>
+  <div class="idea-wrap">
+    <div class="idea-main">
+      <div class="idea-k">Your idea</div>
+      <h1 class="idea-h">${esc(idea.title)}</h1>
+      ${idea.gap?`<p class="idea-gap">${esc(idea.gap)}</p>`:""}
+      ${src?`<p class="idea-src">You claimed this from \u201c${esc(src.article.headline||src.article.title)}\u201d. <button class="link" data-act="ideajump" data-id="${src.id}">Reread it</button></p>`:""}
+      <div class="idea-chat">
+        <div class="idea-log" aria-live="polite">
+          ${idea.chat.length ? log : `<div class="chat-empty">Tell Scout what you're thinking, even if it's half-formed. Ask it anything: it answers properly, points you to papers you've read that bear on it, and can name new ones worth opening. It can also see everything you asked Scout while reading, so if you were already circling an idea over there, just say so and it'll pick the thread up.
+            <div class="suggest">${starters.map(q=>`<button data-act="ideasuggest">${esc(q)}</button>`).join("")}</div></div>`}
+          ${b && b.loading ? `<div class="msg a working">Thinking\u2026</div>`:""}
+          ${b && b.error ? `<p class="err">${esc(b.error)}</p>`:""}
+        </div>
+        <form class="chat-form" data-form="idea">
+          <textarea name="iq" rows="1" placeholder="What are you thinking?" aria-label="Your message"></textarea>
+          <button class="btn primary" type="submit" ${b&&b.loading?"disabled":""}>Send</button>
+        </form>
+      </div>
+    </div>
+    <aside class="idea-side">
+      <div class="slots-h">The idea so far</div>
+      <dl class="slots">${SLOTS.map(([k,label])=>`<div class="${idea.slots[k]?"on":""}"><dt>${esc(label)}</dt><dd>${idea.slots[k]?esc(idea.slots[k]):"<span class='slot-empty'>not yet</span>"}</dd></div>`).join("")}</dl>
+      ${idea.linked.length?`<div class="slots-h" style="margin-top:22px">Papers it rests on</div>
+        <ul class="idea-links">${idea.linked.map(id=>{const n=trail&&trail.nodes[id]; return n?`<li><button class="link" data-act="ideajump" data-id="${id}"><b>${esc(shortCite(n))}</b> ${esc(n.article.headline||n.article.title)}</button></li>`:"";}).join("")}</ul>`:""}
+      ${lastExplore?`<div class="actions"><button class="btn" data-act="explore" data-i="${idea.chat.indexOf(lastExplore)}">Keep exploring</button></div>`:""}
+    </aside>
+  </div>
+  ${renderIdeaDoc(idea, trail, pmap)}`;
+}
+
+function renderTrail(){
+  const trail = curTrail(); if(!trail){ app.view="home"; return renderHome(); }
+  const node = trail.nodes[trail.cur.nodeId] || trail.nodes[trail.rootId];
+  const main = app.citedOpen ? renderCited(trail) : (trail.cur.mode==="read" && node.kind==="article") ? renderRead(trail, node) : renderPick(trail, node);
+  const nCited = citedNodes(trail).length;
+  const terms = Object.values(store.terms);
+  const lims = allLimits(trail);
+  return topbar(app.ideaReturn
+    ? `<button class="btn primary back-btn" data-act="toidea"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4 6.5 10l6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Back to your idea</button>${ideaTab()}`
+    : app.citedOpen
+      ? `<button class="btn primary back-btn" data-act="citeclose"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4 6.5 10l6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Back to your research</button>${ideaTab()}`
+      : `${ideaTab()}<button class="btn cite-btn" data-act="cited">Works cited (${nCited})</button>`) + `
+  <div class="work">
+    <aside class="col-trail ${app.trailOpen?"open":""}">
+      <button class="btn trail-toggle" data-act="toggletrail" aria-expanded="${app.trailOpen}">${app.trailOpen?"Hide your trail":"Show your trail"}</button>
+      <div class="tree-wrap">
+        <div class="trail-head">Your trail</div>
+        <p class="trail-topic">${esc(trail.topic)}</p>
+        <ul class="tree">${treeHTML(trail, trail.rootId)}</ul>
+        <button class="btn side-cite" data-act="cited">Works cited (${nCited})</button>
+        <button class="btn side-cite" data-act="board">Your ideas (${allIdeas().length})</button>
+        <details class="gloss"><summary>Terms you've learned (${terms.length})</summary>
+          ${terms.length ? `<dl>${terms.slice().reverse().map(t=>`<dt>${esc(t.term)}</dt><dd>${esc(t.meaning)}</dd>`).join("")}</dl>` : `<p class="chat-empty">Open an article to start your glossary.</p>`}
+        </details>
+        <details class="gloss" ${app.limsOpen?"open":""}><summary>Limitations you've found (${lims.length})</summary>
+          ${lims.length ? `<ul class="limlist">${lims.slice().reverse().map(x=>`<li><button class="limrow" data-act="lim" data-id="${x.node.id}" data-i="${x.i}"><span class="limrow-n">${esc(x.L.name)}</span><span class="limrow-s">${esc(x.node.article.headline||x.node.article.title)}${(trail.fixes&&trail.fixes[limKey(x.node.id,x.i)])?" · looked into":""}</span></button></li>`).join("")}</ul>` : `<p class="chat-empty">Every paper you open lists what it can't do yet. They collect here.</p>`}
+        </details>
+      </div>
+    </aside>
+    <main class="col-main">${main}</main>
+    <aside class="col-chat" aria-label="Scout, your trail guide">${renderChat(trail)}</aside>
+  </div>
+  <button class="btn primary chat-toggle" data-act="openchat">Ask Scout</button>
+  ${renderLimModal(trail)}`;
+}
+
+function render(){
+  const active = document.activeElement;
+  const draft = { topic: ($("input[name=topic]")||{}).value, q: ($("textarea[name=q]")||{}).value, iq: ($("textarea[name=iq]")||{}).value, focus: active && active.name };
+  let html;
+  if(app.view==="field") html = renderField();
+  else if(app.view==="board") html = renderBoardPage();
+  else if(app.view==="trail") html = renderTrail();
+  else html = renderHome();
+  hidePop();
+  $("#app").innerHTML = html;
+  if(draft.topic && $("input[name=topic]")) $("input[name=topic]").value = draft.topic;
+  if(draft.q && $("textarea[name=q]")) $("textarea[name=q]").value = draft.q;
+  if(draft.focus==="q" && $("textarea[name=q]")) $("textarea[name=q]").focus();
+  if(draft.iq && $("textarea[name=iq]")) $("textarea[name=iq]").value = draft.iq;
+  if(draft.focus==="iq" && $("textarea[name=iq]")) $("textarea[name=iq]").focus();
+  if(draft.focus==="topic" && $("input[name=topic]")) $("input[name=topic]").focus();
+  focusChat(); focusIdeaChat();
+  if(app.view==="trail"){
+    const t = curTrail();
+    if(t){
+      const n = t.nodes[t.cur.nodeId];
+      if(n && n.kind==="article" && n.detail) ensureVerified(t, n);
+      if(n && n.candidates) ensureCandidatesVerified(t, n);
+    }
+  }
+}
+
+/* ---------- Events ---------- */
+document.addEventListener("click", e=>{
+  const el = e.target.closest("[data-act]"); if(!el) return;
+  const act = el.dataset.act, trail = curTrail();
+  const node = trail && trail.nodes[trail.cur.nodeId];
+  switch(act){
+    case "home": app.view="home"; app.citedOpen=false; app.ideaId=null; document.body.classList.remove("chat-open"); render(); window.scrollTo({top:0}); break;
+    case "field": app.fieldId = el.dataset.id; app.cats = null; app.view="field"; render(); window.scrollTo({top:0}); break;
+    case "fieldback": app.fieldId = trail.field; app.cats = null; app.view="field"; render(); break;
+    case "cats": loadCats(false); break;
+    case "morecats": loadCats(true); break;
+    case "cat": { const c = app.cats.items[+el.dataset.i]; if(c) startTrail(app.fieldId, c.name); break; }
+    case "resume": app.citedOpen=false; app.trailId = el.dataset.id; app.view="trail"; render(); window.scrollTo({top:0});
+      { const t=curTrail(), n=t.nodes[t.cur.nodeId]; if(t.cur.mode==="pick" && !n.candidates) loadCandidates(t,n,false); if(t.cur.mode==="read" && !n.detail) loadDetail(t,n); } break;
+    case "deltrail": store.trails = store.trails.filter(t=>t.id!==el.dataset.id); save(); render(); break;
+    case "open": openCandidate(trail, node, node.candidates[+el.dataset.i]); break;
+    case "refresh": loadCandidates(trail, node, !!node.candidates); break;
+    case "lensclear": trail.lens = ""; save(); loadCandidates(trail, node, !!node.candidates); break;
+    case "back": goBack(trail, node); break;
+    case "deeper": goDeeper(trail, node); break;
+    case "reread": trail.cur = {nodeId:node.id, mode:"read"}; save(); render(); break;
+    case "retrydetail": loadDetail(trail, node); break;
+    case "jump": jumpTo(trail, el.dataset.id); break;
+    case "srcopen": document.body.classList.remove("chat-open"); jumpTo(trail, el.dataset.id); { const m = $(".col-main"); if(m){ m.setAttribute("tabindex","-1"); m.focus({preventScroll:true}); } window.scrollTo({top:0, behavior:"smooth"}); } break;
+    case "toggletrail": app.trailOpen = !app.trailOpen; render(); break;
+    case "suggest": sendChat(el.textContent); break;
+    case "pickopt": chooseSource(trail, +el.dataset.mi, +el.dataset.j); break;
+    case "optnav": { const m = trail.chat[+el.dataset.mi]; if(m && m.options){ const n=m.options.length; m.view = Math.min(Math.max((m.view||0) + (+el.dataset.d), 0), n-1); save(); render(); } break; }
+    case "optgo": { const m = trail.chat[+el.dataset.mi]; if(m && m.options){ m.view = +el.dataset.j; save(); render(); } break; }
+    case "moreopts": {
+      const m = trail.chat[+el.dataset.mi];
+      if(m && m.options && m.chosen===null){
+        m.options.forEach(o=>trail.seen.push(o.title));
+        m.chosen = -1; m.content = "Set those aside.";
+        save(); sendChat(m.question);
+      }
+      break;
+    }
+    case "undo": document.body.classList.remove("chat-open"); undoJump(trail, +el.dataset.i); window.scrollTo({top:0}); break;
+    case "openchat": document.body.classList.add("chat-open"); focusChat(); { const q=$("textarea[name=q]"); if(q) q.focus(); } break;
+    case "closechat": document.body.classList.remove("chat-open"); break;
+    case "lim": app.lim = {nodeId: el.dataset.id, i: +el.dataset.i}; app.trailOpen = false; document.body.classList.remove("chat-open"); render(); break;
+    case "limclose": app.lim = null; render(); break;
+    case "fixes": loadFixes(trail, app.lim.nodeId, app.lim.i); break;
+    case "fixopen": openFix(trail, app.lim.nodeId, app.lim.i, +el.dataset.j); break;
+    case "board": { if(app.view!=="board") app.backTo = app.view; app.view = "board"; app.citedOpen = false; app.trailOpen = false;
+      document.body.classList.remove("chat-open");
+      app.ideaId = null; render(); window.scrollTo({top:0}); break; }
+    case "boardclose": app.view = (app.backTo && app.backTo!=="board") ? app.backTo : (app.trailId ? "trail" : "home"); app.ideaId = null; render(); window.scrollTo({top:0}); break;
+    case "boardlist": app.ideaId = null; render(); window.scrollTo({top:0}); break;
+    case "openidea": app.ideaId = el.dataset.id; busy.doc = null; busy.docdl = null; render(); window.scrollTo({top:0}); break;
+    case "claimlim": if(app.lim) startIdea(trail, app.lim.nodeId, app.lim.i); break;
+    case "ideasuggest": { const idea = curIdea(); if(idea) sendIdeaChat(idea, el.textContent); break; }
+    case "ideajump": { const idea = curIdea(); const t = trailOfIdea(idea) || trail; if(!t) break;
+      app.ideaReturn = app.ideaId; app.trailId = t.id; app.view = "trail"; jumpTo(t, el.dataset.id); break; }
+    case "builddoc": { const idea = curIdea(); if(idea){ busy.docdl = null; buildIdeaDoc(idea); } break; }
+    case "dldoc": { const idea = curIdea(); if(idea) downloadIdeaDoc(idea, el.dataset.fmt); break; }
+    case "copydoc": { const idea = curIdea(); if(idea) copyIdeaDoc(idea); break; }
+    case "ideapaper": { const idea = curIdea(); if(idea) openIdeaPaper(idea, +el.dataset.mi, +el.dataset.j); break; }
+    case "explore": { const idea = curIdea(); const m = idea && idea.chat[+el.dataset.i];
+      if(idea && m && m.explore){ m.exploreUsed = true; exploreForIdea(idea, m.explore.topic); } break; }
+    case "toidea": backToIdea(); break;
+    case "cited": app.citedOpen = true; busy.dl = null; app.trailOpen = false; render(); window.scrollTo({top:0}); break;
+    case "citeclose": app.citedOpen = false; render(); window.scrollTo({top:0}); break;
+    case "citestyle": store.citeStyle = el.dataset.style; save(); busy.dl = null; render(); break;
+    case "citetoggle": { const n = trail.nodes[el.dataset.id]; if(n){ n.cited = n.cited === false; save(); render(); } break; }
+    case "dl": downloadCited(trail, el.dataset.fmt); break;
+    case "copycite": copyCited(trail); break;
+    case "backup": saveBackup(); break;
+  }
+});
+document.addEventListener("change", e=>{
+  if(e.target.id==="restorein" && e.target.files && e.target.files[0]){ restoreBackup(e.target.files[0]); e.target.value=""; }
+});
+document.addEventListener("submit", e=>{
+  const f = e.target.closest("[data-form]"); if(!f) return; e.preventDefault();
+  if(f.dataset.form==="topic"){ const v = f.topic.value.trim(); if(v) startTrail(app.fieldId, v); }
+  if(f.dataset.form==="lens"){ const t = curTrail(); const v = f.lens.value.trim(); if(t && v){ t.lens = v; save(); loadCandidates(t, t.nodes[t.cur.nodeId], !!t.nodes[t.cur.nodeId].candidates); } }
+  if(f.dataset.form==="idea"){ const idea = curIdea(); const v = f.iq.value; f.iq.value=""; if(idea) sendIdeaChat(idea, v); }
+  if(f.dataset.form==="chat"){ const v = f.q.value; f.q.value=""; sendChat(v); }
+});
+document.addEventListener("keydown", e=>{
+  if(e.target.name==="iq" && e.key==="Enter" && !e.shiftKey){ e.preventDefault(); const f=e.target.form; const v=f.iq.value; f.iq.value=""; const idea=curIdea(); if(idea) sendIdeaChat(idea, v); return; }
+  if(e.target.name==="q" && e.key==="Enter" && !e.shiftKey){ e.preventDefault(); const f=e.target.form; const v=f.q.value; f.q.value=""; sendChat(v); }
+});
+
+render();
+net.probe();
+})();
+</script>
+</body>
+</html>
