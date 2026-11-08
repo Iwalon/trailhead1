@@ -2,27 +2,55 @@
 // Body: { input: string | [{role,content}], modelTier?: "quick"|"default"|"complex" }
 // Returns: { text, truncated }
 
-// Two providers. Set ANTHROPIC_API_KEY for Claude, or GROQ_API_KEY for Groq.
-// If both are set, ANTHROPIC wins unless you set AI_PROVIDER=groq.
+// Three providers. Set GEMINI_API_KEY for Gemini, ANTHROPIC_API_KEY for Claude,
+// or GROQ_API_KEY for Groq. Whichever key is set is the one used; if several are
+// set, pick with AI_PROVIDER = gemini | anthropic | groq.
 function provider() {
   const wants = (process.env.AI_PROVIDER || "").toLowerCase();
+  const hasGemini = !!(process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY);
   const hasClaude = !!process.env.ANTHROPIC_API_KEY;
   const hasOpenAIish = !!(process.env.GROQ_API_KEY || process.env.OPENAI_API_KEY || process.env.AI_API_KEY);
+
+  if (wants === "gemini" || wants === "google" || (!wants && hasGemini)) {
+    if (!hasGemini) return null;
+    return {
+      kind: "openai",                       // Gemini speaks OpenAI's chat/completions shape
+      name: "gemini",
+      key: process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY,
+      base: process.env.AI_BASE_URL || "https://generativelanguage.googleapis.com/v1beta/openai",
+      models: {
+        quick:   process.env.MODEL_QUICK   || "gemini-3.5-flash-lite",
+        default: process.env.MODEL_DEFAULT || "gemini-3.8-flash",
+        complex: process.env.MODEL_COMPLEX || "gemini-3.8-flash",
+      },
+      fallbacks: ["gemini-3.8-flash", "gemini-2.5-flash", "gemini-3.1-flash-lite", "gemini-2.5-flash-lite"],
+      // Gemini 3 always thinks, and those tokens come out of the same budget as
+      // the answer. Keep thinking short and give the budget room, or a long JSON
+      // reply gets cut off mid-object.
+      extra: { reasoning_effort: process.env.GEMINI_REASONING || "low" },
+      maxOutput: Number(process.env.MAX_OUTPUT_TOKENS || 8192),
+    };
+  }
+
   if (wants === "groq" || wants === "openai" || (!hasClaude && hasOpenAIish)) {
     return {
       kind: "openai",
+      name: "groq",
       key: process.env.GROQ_API_KEY || process.env.OPENAI_API_KEY || process.env.AI_API_KEY,
       base: process.env.AI_BASE_URL || (process.env.GROQ_API_KEY ? "https://api.groq.com/openai/v1" : "https://api.openai.com/v1"),
       models: {
-        quick:   process.env.MODEL_QUICK   || "llama-3.1-8b-instant",
-        default: process.env.MODEL_DEFAULT || "llama-3.3-70b-versatile",
-        complex: process.env.MODEL_COMPLEX || "llama-3.3-70b-versatile",
+        quick:   process.env.MODEL_QUICK   || "openai/gpt-oss-20b",
+        default: process.env.MODEL_DEFAULT || "openai/gpt-oss-120b",
+        complex: process.env.MODEL_COMPLEX || "openai/gpt-oss-120b",
       },
+      // Groq retires models regularly. If the one we ask for is gone, try these.
+      fallbacks: ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.8-27b"],
     };
   }
   if (hasClaude) {
     return {
       kind: "anthropic",
+      name: "anthropic",
       key: process.env.ANTHROPIC_API_KEY,
       base: "https://api.anthropic.com",
       models: {
@@ -36,7 +64,7 @@ function provider() {
 }
 
 const MAX_INPUT_BYTES = 64 * 1024;   // same cap the app budgets against
-const MAX_OUTPUT_TOKENS = 4096;
+const MAX_OUTPUT_TOKENS = Number(process.env.MAX_OUTPUT_TOKENS || 4096);
 
 // Crude per-instance rate limit. Serverless instances are recycled, so this
 // slows abuse rather than stopping it — set a spend cap in the Anthropic console too.
@@ -65,7 +93,7 @@ export default async function handler(req, res) {
 
   const P = provider();
   if (!P) {
-    return res.status(500).json({ code: "no_key", message: "Set ANTHROPIC_API_KEY or GROQ_API_KEY on the server" });
+    return res.status(500).json({ code: "no_key", message: "Set GEMINI_API_KEY, ANTHROPIC_API_KEY or GROQ_API_KEY on the server" });
   }
   if (!originAllowed(req)) {
     return res.status(403).json({ code: "forbidden", message: "Origin not allowed" });
@@ -101,20 +129,40 @@ export default async function handler(req, res) {
   const headers = P.kind === "anthropic"
     ? { "content-type": "application/json", "x-api-key": P.key, "anthropic-version": "2023-06-01" }
     : { "content-type": "application/json", authorization: `Bearer ${P.key}` };
-  const payload = { model, max_tokens: MAX_OUTPUT_TOKENS, messages };
+
+  // A dead model id shouldn't take the whole app down with it.
+  const deadModel = (status, msg) =>
+    status === 400 &&
+    /decommission|deprecat|does not exist|not found|no longer|unknown model|invalid model/i.test(msg || "");
+
+  const candidates = [model, ...(P.fallbacks || [])].filter((m, i, a) => m && a.indexOf(m) === i);
 
   try {
-    const r = await fetch(url, { method: "POST", headers, body: JSON.stringify(payload) });
-    const data = await r.json().catch(() => null);
+    let r, data, msg = "", used = model;
+    for (const m of candidates) {
+      used = m;
+      r = await fetch(url, {
+        method: "POST", headers,
+        body: JSON.stringify(Object.assign(
+          { model: m, max_tokens: P.maxOutput || MAX_OUTPUT_TOKENS, messages },
+          P.extra || {}
+        )),
+      });
+      data = await r.json().catch(() => null);
+      if (r.ok) break;
+      msg = data?.error?.message || `HTTP ${r.status}`;
+      if (!deadModel(r.status, msg)) break;
+      console.warn(`model "${m}" is gone, trying the next one`);
+    }
 
     if (!r.ok) {
-      const msg = data?.error?.message || "Upstream error";
       const code =
         r.status === 429 ? "rate_limited" :
         r.status === 401 || r.status === 403 ? "session_expired" :
         r.status === 400 ? "invalid_request" : "upstream_error";
-      console.error(`${P.kind} error`, r.status, msg);
-      return res.status(r.status === 429 ? 429 : 502).json({ code, message: msg });
+      console.error(`${P.name || P.kind} error`, r.status, used, msg);
+      // Pass the real reason through; a generic message costs an hour of guessing.
+      return res.status(r.status === 429 ? 429 : 502).json({ code, message: msg, model: used });
     }
 
     if (P.kind === "anthropic") {
@@ -122,10 +170,17 @@ export default async function handler(req, res) {
       return res.status(200).json({ text, truncated: data.stop_reason === "max_tokens" });
     }
     const choice = (data.choices || [])[0] || {};
-    return res.status(200).json({
-      text: String(choice.message?.content || ""),
-      truncated: choice.finish_reason === "length",
-    });
+    const text = String(choice.message?.content || "");
+    // A thinking model can burn the whole budget before writing a word. Say so,
+    // rather than letting the page report a blank answer it can't explain.
+    if (!text.trim() && choice.finish_reason === "length") {
+      return res.status(502).json({
+        code: "truncated",
+        message: `${used} used its whole output budget thinking. Raise MAX_OUTPUT_TOKENS or set GEMINI_REASONING=none.`,
+        model: used,
+      });
+    }
+    return res.status(200).json({ text, truncated: choice.finish_reason === "length" });
   } catch (err) {
     console.error("ask failed", err);
     return res.status(502).json({ code: "upstream_error", message: "Could not reach the model." });
